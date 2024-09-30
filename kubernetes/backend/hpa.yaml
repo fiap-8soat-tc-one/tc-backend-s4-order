@@ -1,13 +1,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: app-tcbackends2-hpa
-  namespace: app-tcbackends2
+  name: app-tc-backend-s2-hpa
+  namespace: fiap
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: app-tcbackends2
+    name: app-tc-backend-s2-dep
   minReplicas: 3
   maxReplicas: 10
   metrics:
@@ -22,4 +22,4 @@ spec:
         name: memory
         target:
           type: Utilization
-          averageUtilization: 60
+          averageUtilization: 50

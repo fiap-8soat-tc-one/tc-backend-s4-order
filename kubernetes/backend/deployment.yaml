@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-tcbackends2
-  namespace: app-tcbackends2
+  name: app-tc-backend-s2-dep
+  namespace: fiap
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: app-tcbackends2
+      app: app-tc-backend-s2
   template:
     metadata:
       labels:
-        app: app-tcbackends2
+        app: app-tc-backend-s2
     spec:
       containers:
-        - name: app-tcbackends2
+        - name: app-tc-backend-s2
           image: 'jcmds/fiap-8soat-tc:latest'
           ports:
             - containerPort: 8080
@@ -41,34 +41,7 @@ spec:
             - name: DATABASE_PORT
               value: "5432"
             - name: DATABASE_NAME
-              value: postgres
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: db-tcbackends2
-spec:
-  selector:
-    app: app-tcbackends2
-  ports:
-  - protocol: TCP
-    port: 5432
-  type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: tc-backends2
-spec:
-  selector:
-    app: tc-backends2
-  ports:
-  - protocol: TCP
-    port: 8080
-  type: ClusterIP
-  
-   
+              value: postgres   
         
         
 
