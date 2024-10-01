@@ -5,9 +5,10 @@ import "../../libs/shim/jsonSchema.js"
 import "../../libs/shim/urijs.js";
 
 import { oAuthResponseSchema } from "../../schemas/oauth-schema.js";
+
 const Request = Symbol.for("request");
 
-export function ShouldBeCreateCategoryReturnCreatedCategory() {
+export function ShouldBeCreateProductReturnCreatedProduct() {
     postman[Request]({
         name: "login",
         method: "POST",
@@ -39,20 +40,20 @@ export function ShouldBeCreateCategoryReturnCreatedCategory() {
       });
   
       postman[Request]({
-        name: "create category",
+        name: "create product",
         method: "POST",
-        address: "{{BASE_URL}}/api/private/v1/categories",
+        address: "{{BASE_URL}}/api/private/v1/products",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json"
         },
-        data: '{"name": "Pastel de Frango", "description": "Pastel de frango bem temperado", "active": true}',
+        data: '{"id_category": "a930551c-55b3-4687-9ebd-5525f0baf6da", "name": "milkshake de chocolate com uva", "description": "milkshake de chocolate com uva 500ml", "price": 16.50}',
         auth(config) {
           config.headers.Authorization = `Bearer ${pm.globals.get("bearer")}`;
         },
         post() {
-          pm.test('should be return status code 200 when making create category', () => pm.response.to.have.status(200))
-          pm.test('should be return in less than 1s when call the create category', () => pm.expect(pm.response.responseTime).to.be.below(1000))
+          pm.test('should be return status code 200 when making create product', () => pm.response.to.have.status(200))
+          pm.test('should be return in less than 1s when call the create product', () => pm.expect(pm.response.responseTime).to.be.below(1000))
         }
       });
 }

@@ -7,7 +7,7 @@ import "../../libs/shim/urijs.js";
 import { oAuthResponseSchema } from "../../schemas/oauth-schema.js";
 const Request = Symbol.for("request");
 
-export function ShouldBeUpdateCategoryReturnUpdatedCategory() {
+export function ShouldBeGetOrderByIdReturnsOrder() {
     postman[Request]({
         name: "login",
         method: "POST",
@@ -27,7 +27,7 @@ export function ShouldBeUpdateCategoryReturnUpdatedCategory() {
           pm.test('should be return  status code 200 when making the get oauth/token', () => pm.response.to.have.status(200))
           pm.test('should be return in less than a 1s when call the get oauth/token', () => pm.expect(pm.response.responseTime).to.be.below(1000))
           pm.test('should be return object schema valid when call the get oauth/token', () =>  pm.response.to.have.jsonSchema(oAuthResponseSchema))
-          pm.test("should be return a valid token when call the get oauth/token",  () => {
+          pm.test("should be return a valid token when call the get oauth/token", function () {
             const tokenParts = token.split('.');
             pm.expect(tokenParts.length).to.eql(3);
             pm.expect(tokenParts[0]).to.match(/^[A-Za-z0-9-_]+$/);
@@ -39,24 +39,19 @@ export function ShouldBeUpdateCategoryReturnUpdatedCategory() {
       });
   
       postman[Request]({
-        name: "create category",
-        method: "PUT",
-        address: "{{BASE_URL}}/api/private/v1/categories/f6eba314-0ea2-48cc-9a19-c5790c887c85",
+        name: "get order by id",
+        method: "GET",
+        address: "{{BASE_URL}}/api/private/v1/orders/f6af5cc6-1637-47fd-810e-3df2d2a2b878",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json"
         },
-        data: '{"name": "Sandwich 2.0", "description": "Sandwich 2.0  Categories", "active": true}',
         auth(config) {
           config.headers.Authorization = `Bearer ${pm.globals.get("bearer")}`;
         },
         post() {
-          pm.test('should be return status code 200 when making create category', () => pm.response.to.have.status(200))
-          pm.test('should be return in less than 1s when call the create category', () => pm.expect(pm.response.responseTime).to.be.below(1000))
+          pm.test('should be return status code 200 when making the get order by id', () => pm.response.to.have.status(200))
+          pm.test('should be return in less than 1s when call the get order by id', () => pm.expect(pm.response.responseTime).to.be.below(1000))
         }
       });
 }
-
-
-
-
