@@ -36,22 +36,26 @@ Abra o terminal do linux e execute o seguinte comando para baixar os pacotes e i
 
 
 #️⃣ wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+
 ![alt text](image.png)
 
 Com sucesso na instalação execute o comando abaixo para validar os comandos e começar a sua jornada na criação do seu cluster. 🚀
 
 #️⃣ k3d  —help
+
 ![alt text](<image 1.png>)
 
 Agora execute o seguinte comando para criar seu cluster:
 
 #️⃣ sudo k3d cluster create APP-FIAP
+
 ![alt text](<image 2.png>)
 
 Em seguida execute o comando abaixo para visualização do cluster criado:
 
 
 #️⃣ sudo k3d cluster list
+
 ![alt text](<image 3.png>)
 
 
@@ -59,11 +63,13 @@ Agora que o cluster já está instalado, vamos criar nossa primeira “namespace
 
 
 #️⃣ sudo kubectl create namespace fiap
+
 ![alt text](<image 4.png>)
 
 Você pode listar todas as namespaces criadas com o seguinte comando:
 
 #️⃣ sudo kubectl get namespaces
+
 ![alt text](<image 5.png>)
 
 
@@ -85,6 +91,7 @@ Agora que temos o metrics-server instalado em nosso cluster basta executar o seg
 
 
 #️⃣ sudo kubectl get pods -n kube-system
+
 ![alt text](<image 6.png>)
 
 
@@ -108,6 +115,7 @@ Execute o seguinte comando para validar se sua aplicação está rodando correta
 
 
 #️⃣ kubectl get pods —namespace fiap
+
 ![alt text](<image 7.png>)
 
 
