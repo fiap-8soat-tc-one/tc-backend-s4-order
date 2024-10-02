@@ -83,7 +83,7 @@ Nota: Para instalar o Metrics-Server é necessário, ter o Helm instalado. No am
 $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
 $ chmod 700 get_helm.sh
 $ ./get_helm.sh
-
+```
 
 Com o gerenciador de pacote Helm instalado, execute os comandos abaixo para instalar o componente do metrics-server:
 
