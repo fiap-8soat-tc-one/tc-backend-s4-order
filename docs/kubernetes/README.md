@@ -77,8 +77,15 @@ Em nosso ambiente estamos utilizando HPA ( Horizontal Pod Autoscaler ), para per
 
 Para isso é necessário instalar um componente conhecido como Metrics Server, pois ele é um Pod que fica configurado no seu cluster para analisar o comportamento em nivel de carga e processamento de CPU e Memória de suas aplicações.
 
-Neste etapa será neceśsario executar os seguintes comandos:
+Nota: Para instalar o Metrics-Server é necessário, ter o Helm instalado. No ambiente linux executamos os seguintes comandos:
 
+```bash
+$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+$ chmod 700 get_helm.sh
+$ ./get_helm.sh
+
+
+Com o gerenciador de pacote Helm instalado, execute os comandos abaixo para instalar o componente do metrics-server:
 
 
 ```bash
