@@ -109,6 +109,7 @@ Com o ambiente devidamente prepardo, vá até a pasta “kubernetes” aonde con
 kubectl apply -f secrets.yaml
 kubectl apply -f services.yaml
 kubectl apply -f deployment.yaml
+kubectl apply -f hpa.yaml
 ```
 
 
