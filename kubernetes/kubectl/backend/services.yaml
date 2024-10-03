@@ -1,23 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: db-tcbackends2
+  name: app-tc-backend-s2-svc
+  namespace: fiap
 spec:
   selector:
-    app: app-tcbackends2
+    app: app-tc-backend-s2
   ports:
   - protocol: TCP
-    port: 5432
-  type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: tc-backends2
-spec:
-  selector:
-    app: tc-backends2
-  ports:
-  - protocol: TCP
-    port: 8080
+    port: 80
+    targetPort: 8080
   type: ClusterIP
