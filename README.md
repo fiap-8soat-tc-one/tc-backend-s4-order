@@ -70,6 +70,12 @@ As informações dispostas no sistema de pedidos precisarão ser gerenciadas pel
 
 ---
 
+## Clean Architecture
+
+[Clique aqui para ser redirecionado a documentação sobre clean-architecture aplicada nesse projeto](https://github.com/fiap-8soat-tc-one/tc-backend-s2/blob/main/docs/clean-arch/README.md)
+
+---
+
 ## Configuração de Ambiente de Desenvolvimento Local  :heavy_check_mark:
 
 [Clique aqui para ser redirecionado para a wiki de configuração do ambiente de desenvolvimento local](https://github.com/fiap-8soat-tc-one/tc-backend-s2/blob/main/docs/config/README.md)
@@ -92,9 +98,7 @@ As informações dispostas no sistema de pedidos precisarão ser gerenciadas pel
 
 - **É possível acessar o Swagger/Open API da aplicação pela seguinte URL: `http://localhost:8080/swagger-ui/index.html`**
 
-### Clean Architecture
 
-[Clique aqui para ser redirecionado a documentação sobre clean-architecture aplicada nesse projeto](https://github.com/fiap-8soat-tc-one/tc-backend-s2/blob/main/docs/clean-arch/README.md)
 
 ### Workflow de Execução das APIs
 
