@@ -107,10 +107,11 @@ Com o ambiente devidamente prepardo, vá até a pasta “kubernetes” aonde con
 
 
 ```bash
-kubectl apply -f secrets.yaml
-kubectl apply -f services.yaml
-kubectl apply -f deployment.yaml
-kubectl apply -f hpa.yaml
+kubectl apply -f 1-namespace.yaml
+kubectl apply -f 2-secrets.yaml
+kubectl apply -f 3-deployment.yaml
+kubectl apply -f 4-hpa.yaml
+kubectl apply -f 5-services.yaml
 ```
 
 
