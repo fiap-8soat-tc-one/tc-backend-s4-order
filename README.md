@@ -67,6 +67,7 @@ As informações dispostas no sistema de pedidos precisarão ser gerenciadas pel
 - IntelliJ IDEA
 - DBeaver SQL Client
 - Postman
+- k6
 
 ---
 
