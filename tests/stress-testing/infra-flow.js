@@ -5,10 +5,10 @@ export const options = {
   scenarios: {
     healthCheck: {
       executor: 'ramping-vus',
-      startVUs: 1,
+      startVUs: 50,
       stages: [
-        { duration: '1m', target: 50 },
-        { duration: '2m', target: 50 },
+        { duration: '1m', target: 100 },
+        { duration: '1m', target: 200 },
         { duration: '1m', target: 1 },
       ],
       gracefulRampDown: '1s',

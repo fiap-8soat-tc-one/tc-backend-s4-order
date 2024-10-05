@@ -16,8 +16,8 @@ export function ShouldBeGetVerifyApplicationIsHealthy() {
           "Content-Type": "application/json"
         },
         post() {
-          pm.test('should be return status code 200 when making the get customers', () => pm.response.to.have.status(200))
-          pm.test('should be return in less than 1s when call the get customers', () => pm.expect(pm.response.responseTime).to.be.below(1000))
+          pm.test('should be return status code 200 when making the get health check', () => pm.response.to.have.status(200))
+          pm.test('should be return in less than 1s when call the get health check', () => pm.expect(pm.response.responseTime).to.be.below(1000))
         }
       });
 }
