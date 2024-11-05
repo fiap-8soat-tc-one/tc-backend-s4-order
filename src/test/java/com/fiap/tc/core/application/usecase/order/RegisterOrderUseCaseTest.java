@@ -46,15 +46,16 @@ public class RegisterOrderUseCaseTest extends FixtureTest {
 
     @Test
     public void registerOrderTest() {
+        var uuid = java.util.UUID.randomUUID();
         var order = MapperConstants.ORDER_MAPPER.fromEntity(orderEntity);
         var orderList = request.getOrderItems().stream().map(ORDER_ITEM_MAPPER::toDomain).toList();
         when(paymentLinkGateway.generate(order)).thenReturn(Optional.of("payment link"));
-        when(orderGateway.register(request.getIdCustomer(), orderList)).thenReturn(order);
+        when(orderGateway.register(uuid, orderList)).thenReturn(order);
 
-        var orderResponse = registerOrderUseCase.register(request.getIdCustomer(), orderList);
+        var orderResponse = registerOrderUseCase.register(uuid, orderList);
 
         assertNotNull(orderResponse);
-        verify(orderGateway).register(request.getIdCustomer(), orderList);
+        verify(orderGateway).register(uuid, orderList);
         verify(paymentLinkGateway).generate(Mockito.any());
     }
 }

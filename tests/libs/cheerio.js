@@ -9349,7 +9349,7 @@ function findOne(test, nodes, recurse) {
     for (var i = 0; i < nodes.length && !elem; i++) {
         var checked = nodes[i];
         if (!(0, domhandler_1.isTag)(checked)) {
-            continue;
+
         }
         else if (test(checked)) {
             elem = checked;

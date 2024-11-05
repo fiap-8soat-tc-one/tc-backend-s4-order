@@ -135,16 +135,15 @@ public class OrderGatewayTests extends FixtureTest {
     @Test
     public void saveOrderTest() {
         var idProduct = orderRequest.getOrderItems().get(0).getIdProduct();
-
+        var uuid = java.util.UUID.randomUUID();
         when(orderRepository.save(Mockito.any())).thenReturn(orderEntity);
-        when(customerRepository.findByUuid(orderRequest.getIdCustomer())).thenReturn(Optional.of(customerEntity));
         when(productRepository.findByUuid(idProduct)).thenReturn(Optional.of(productEntity));
 
         var orderList = orderRequest.getOrderItems().stream().map(ORDER_ITEM_MAPPER::toDomain).toList();
-        var order = orderGateway.register(orderRequest.getIdCustomer(), orderList);
+        var order = orderGateway.register(uuid, orderList);
 
         assertNotNull(order);
-        verify(customerRepository).findByUuid(orderRequest.getIdCustomer());
+        verify(customerRepository).findByUuid(uuid);
         verify(productRepository, times(2)).findByUuid(idProduct);
         verify(orderRepository).save(Mockito.any());
 
@@ -152,15 +151,16 @@ public class OrderGatewayTests extends FixtureTest {
 
     @Test
     public void saveOrderWhenEmptyItemsTest() {
+        var uuid = new UUID(0, 0);
+
         orderRequest.setOrderItems(Collections.emptyList());
         when(orderRepository.save(Mockito.any())).thenReturn(orderEntity);
-        when(customerRepository.findByUuid(orderRequest.getIdCustomer())).thenReturn(Optional.empty());
 
         var orderList = orderRequest.getOrderItems().stream().map(ORDER_ITEM_MAPPER::toDomain).toList();
-        var order = orderGateway.register(orderRequest.getIdCustomer(), orderList);
+        var order = orderGateway.register(uuid, orderList);
 
         assertNotNull(order);
-        verify(customerRepository).findByUuid(orderRequest.getIdCustomer());
+        verify(customerRepository).findByUuid(uuid);
         verify(orderRepository, times(1)).save(Mockito.any());
 
     }
@@ -168,14 +168,15 @@ public class OrderGatewayTests extends FixtureTest {
     @Test
     public void launchExceptionWhenProductNotExistTest() {
 
+        var uuid = new UUID(0, 0);
+
         var idProduct = orderRequest.getOrderItems().get(0).getIdProduct();
 
-        when(customerRepository.findByUuid(orderRequest.getIdCustomer())).thenReturn(Optional.empty());
         when(productRepository.findByUuid(idProduct)).thenReturn(Optional.empty());
 
         var orderList = orderRequest.getOrderItems().stream().map(ORDER_ITEM_MAPPER::toDomain).toList();
         var assertThrows = Assertions.assertThrows(NotFoundException.class,
-                () -> orderGateway.register(orderRequest.getIdCustomer(), orderList));
+                () -> orderGateway.register(uuid, orderList));
 
         assertTrue(assertThrows.getMessage().contains("not found"));
     }

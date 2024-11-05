@@ -34,7 +34,7 @@ function exclude () {
 
     return res;
   };
-};
+}
 
 /*!
  * Primary Exports
@@ -4147,7 +4147,7 @@ module.exports = function (chai, _) {
       , 'expected #{this} to be an instance of ' + name
       , 'expected #{this} to not be an instance of ' + name
     );
-  };
+  }
 
   Assertion.addMethod('instanceof', assertInstanceOf);
   Assertion.addMethod('instanceOf', assertInstanceOf);
@@ -4314,7 +4314,7 @@ module.exports = function (chai, _) {
       , negate = flag(this, 'negate')
       , pathInfo = isNested ? _.getPathInfo(obj, name) : null
       , value = isNested ? pathInfo.value : obj[name]
-      , isEql = isDeep ? flag(this, 'eql') : (val1, val2) => val1 === val2;;
+        , isEql = isDeep ? flag(this, 'eql') : (val1, val2) => val1 === val2;
 
     var descriptor = '';
     if (isDeep) descriptor += 'deep ';
@@ -5200,7 +5200,7 @@ module.exports = function (chai, _) {
     }
 
     flag(this, 'object', caughtErr);
-  };
+  }
 
   Assertion.addMethod('throw', assertThrows);
   Assertion.addMethod('throws', assertThrows);
@@ -9678,7 +9678,7 @@ module.exports = function (chai, util) {
     should.not['throw'] = should.not['Throw'];
 
     return should;
-  };
+  }
 
   chai.should = loadShould;
   chai.Should = loadShould;

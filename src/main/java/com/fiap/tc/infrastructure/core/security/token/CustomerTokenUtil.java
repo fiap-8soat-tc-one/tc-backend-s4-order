@@ -1,6 +1,8 @@
-﻿package com.fiap.tc.infrastructure.core.security.token;
+package com.fiap.tc.infrastructure.core.security.token;
 
 import com.fiap.tc.domain.entities.Customer;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,10 +16,10 @@ import static java.lang.String.format;
 @Component
 public class CustomerTokenUtil {
 
-    @Value("${jwt.secret}")
+    @Value("${app.jwt.secret}")
     private String secretKey;
 
-    @Value("${jwt.expirationTimeInMillis}")
+    @Value("${app.jwt.expirationTimeInMillis}")
     private long oneHourTtlExpirationInMillis;
 
     public String generateToken(Customer customer) {
@@ -33,11 +35,16 @@ public class CustomerTokenUtil {
                 .compact();
     }
 
-    public void validateToken(String token) {
+    public Jws<Claims> validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
         } catch (Exception e) {
             throw new UnauthorizedUserException(format("Invalid JWT Token: %s", token));
         }
+    }
+
+    public String getCustomerIdFromToken(String token) {
+        Claims claims = validateToken(token).getBody();
+        return claims.get("id", String.class);
     }
 }

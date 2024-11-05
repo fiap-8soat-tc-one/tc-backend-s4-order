@@ -4,6 +4,7 @@ import com.fiap.tc.application.usecases.order.ListOrdersUseCase;
 import com.fiap.tc.application.usecases.order.LoadOrderUseCase;
 import com.fiap.tc.application.usecases.order.RegisterOrderUseCase;
 import com.fiap.tc.application.usecases.order.UpdateStatusOrderUseCase;
+import com.fiap.tc.infrastructure.core.security.token.CustomerTokenUtil;
 import com.fiap.tc.infrastructure.presentation.URLMapping;
 import com.fiap.tc.infrastructure.presentation.requests.OrderRequest;
 import com.fiap.tc.infrastructure.presentation.requests.OrderStatusRequest;
@@ -11,6 +12,7 @@ import com.fiap.tc.infrastructure.presentation.response.DefaultResponse;
 import com.fiap.tc.infrastructure.presentation.response.OrderListResponse;
 import com.fiap.tc.infrastructure.presentation.response.OrderResponse;
 import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,9 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping
 @Api(tags = "Orders API V1", produces = APPLICATION_JSON_VALUE)
 public class OrderController {
+
+    @Autowired
+    private CustomerTokenUtil jwtUtil;
 
     private final RegisterOrderUseCase registerOrderUseCase;
     private final LoadOrderUseCase loadOrderUseCase;
@@ -59,12 +64,21 @@ public class OrderController {
             @ApiResponse(code = 200, message = "Successfully registered order", response = OrderResponse.class),
     })
     @PostMapping(path = URLMapping.ROOT_PUBLIC_API_ORDERS, produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderResponse> register(@ApiParam(value = "Order details for creating a new order",
+    public ResponseEntity<OrderResponse> register(
+            @RequestHeader("X-Authorization-Token") String accessToken,
+            @ApiParam(value = "Order details for creating a new order",
             required = true) @RequestBody @Valid OrderRequest request) {
 
         var listOfItems = request.getOrderItems().stream().map(ORDER_ITEM_MAPPER::toDomain).toList();
+        String customerId = "";
 
-        return ok(ORDER_RESPONSE_MAPPER.fromDomain(registerOrderUseCase.register(request.getIdCustomer(), listOfItems)));
+        // anonymous flow
+        if (accessToken == null) {
+            return ok(ORDER_RESPONSE_MAPPER.fromDomain(registerOrderUseCase.register(null, listOfItems)));
+        }
+
+        customerId = jwtUtil.getCustomerIdFromToken(accessToken);
+        return ok(ORDER_RESPONSE_MAPPER.fromDomain(registerOrderUseCase.register(UUID.fromString(customerId), listOfItems)));
     }
 
     @ApiOperation(value = "update order status", notes = "(Private Endpoint) This endpoint is responsible for updating the order status for tracking by both the kitchen and the customer (reflected on the system monitor).")

@@ -5329,7 +5329,7 @@ function _normalizeEncoding(enc) {
         retried = true;
     }
   }
-};
+}
 
 // Do not cache `Buffer.isEncoding` when checking encoding names as some
 // modules monkey-patch it to support additional encodings

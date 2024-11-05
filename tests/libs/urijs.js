@@ -1645,7 +1645,7 @@
 
       if (name === '__proto__') {
         // ignore attempt at exploiting JavaScript internals
-        continue;
+
       } else if (hasOwn.call(items, name)) {
         if (typeof items[name] === 'string' || items[name] === null) {
           items[name] = [items[name]];
@@ -1741,7 +1741,7 @@
     for (key in data) {
       if (key === '__proto__') {
         // ignore attempt at exploiting JavaScript internals
-        continue;
+
       } else if (hasOwn.call(data, key)) {
         if (isArray(data[key])) {
           unique = {};

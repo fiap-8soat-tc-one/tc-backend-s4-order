@@ -23,7 +23,9 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    image: jcmds/fiap-8soat-tc
+    #    image: jcmds/fiap-8soat-tc
+    build:
+      context: .
     container_name: tc-backend
     ports:
       - 8080:8080
