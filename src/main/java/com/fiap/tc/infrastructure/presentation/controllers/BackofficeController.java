@@ -18,7 +18,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(path = URLMapping.ROOT_PRIVATE_API_AUTH)
 @Api(tags = "token-endpoint", produces = APPLICATION_JSON_VALUE)
-public class AdminController {
+public class BackofficeController {
 
     @Autowired
     private OriginApiProperty originApiProperty;

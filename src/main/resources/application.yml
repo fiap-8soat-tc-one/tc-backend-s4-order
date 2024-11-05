@@ -47,6 +47,10 @@ spring:
         format_sql: true
         enable_lazy_load_no_trans: true
     open-in-view: false
+    
+  jwt:
+    secret: "e0b41325-42e5-4b3a-b995-b05c4e77c56d"
+    expirationTimeInMillis: 3600000
 
 
 app:

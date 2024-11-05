@@ -22,12 +22,12 @@ import static org.springframework.http.ResponseEntity.ok;
 @RestController
 @RequestMapping(path = URLMapping.ROOT_PUBLIC_API_AUTH)
 @Api(tags = "token-endpoint", produces = APPLICATION_JSON_VALUE)
-public class LoginController {
+public class CustomerLoginController {
 
     private final LoadCustomerUseCase loadCustomerUseCase;
     private final CustomerTokenUtil jwtUtil;
 
-    public LoginController(LoadCustomerUseCase loadCustomerUseCase, CustomerTokenUtil jwtUtil) {
+    public CustomerLoginController(LoadCustomerUseCase loadCustomerUseCase, CustomerTokenUtil jwtUtil) {
         this.loadCustomerUseCase = loadCustomerUseCase;
         this.jwtUtil = jwtUtil;
     }
