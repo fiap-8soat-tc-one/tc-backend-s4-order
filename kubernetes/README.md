@@ -103,7 +103,7 @@ Agora que temos o metrics-server instalado em nosso cluster basta executar o seg
 ![alt text](/assets/image%206.png)
 
 
-Com o ambiente devidamente prepardo, vá até a pasta “kubernetes” aonde contém os arquivos de manifestos da aplicação e execute em seu terminal os seguintes comandos:
+Com o ambiente devidamente prepardo, navegue até o [repositório de iac](https://github.com/fiap-8soat-tc-one/tc-backend-s3-k8s-iac/tree/main/src/k8s)  aonde contém os arquivos de manifestos da aplicação e execute em seu terminal os seguintes comandos:
 
 
 ```bash
