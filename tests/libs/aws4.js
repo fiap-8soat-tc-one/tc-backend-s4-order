@@ -25,7 +25,7 @@ function Entity(name, body) {
 
   this.decoders = {};
   this.encoders = {};
-};
+}
 
 Entity.prototype._createNamed = function createNamed(base) {
   var named;
@@ -938,7 +938,7 @@ Reporter.prototype.wrapResult = function wrapResult(result) {
 function ReporterError(path, msg) {
   this.path = path;
   this.rethrow(msg);
-};
+}
 inherits(ReporterError, Error);
 
 ReporterError.prototype.rethrow = function rethrow(msg) {
@@ -1040,7 +1040,7 @@ function DERDecoder(entity) {
   // Construct base tree
   this.tree = new DERNode();
   this.tree._init(entity.body);
-};
+}
 module.exports = DERDecoder;
 
 DERDecoder.prototype.decode = function decode(data, options) {
@@ -1363,7 +1363,7 @@ var DERDecoder = require('./der');
 function PEMDecoder(entity) {
   DERDecoder.call(this, entity);
   this.enc = 'pem';
-};
+}
 inherits(PEMDecoder, DERDecoder);
 module.exports = PEMDecoder;
 
@@ -1423,7 +1423,7 @@ function DEREncoder(entity) {
   // Construct base tree
   this.tree = new DERNode();
   this.tree._init(entity.body);
-};
+}
 module.exports = DEREncoder;
 
 DEREncoder.prototype.encode = function encode(data, reporter) {
@@ -1716,7 +1716,7 @@ var DEREncoder = require('./der');
 function PEMEncoder(entity) {
   DEREncoder.call(this, entity);
   this.enc = 'pem';
-};
+}
 inherits(PEMEncoder, DEREncoder);
 module.exports = PEMEncoder;
 
@@ -22026,7 +22026,7 @@ function arrObjKeys(obj, inspect) {
         if (isArr && String(Number(key)) === key && key < obj.length) { continue; } // eslint-disable-line no-restricted-syntax, no-continue
         if (hasShammedSymbols && symMap['$' + key] instanceof Symbol) {
             // this is to prevent shammed Symbols, which are stored as strings, from being included in the string key section
-            continue; // eslint-disable-line no-restricted-syntax, no-continue
+            // eslint-disable-line no-restricted-syntax, no-continue
         } else if ($test.call(/[^\w$]/, key)) {
             xs.push(inspect(key, obj) + ': ' + inspect(obj[key], obj));
         } else {
@@ -27440,7 +27440,7 @@ function _normalizeEncoding(enc) {
         retried = true;
     }
   }
-};
+}
 
 // Do not cache `Buffer.isEncoding` when checking encoding names as some
 // modules monkey-patch it to support additional encodings

@@ -15,7 +15,8 @@ public class URLMapping {
     public static final String ROOT_PRIVATE_API_PRODUCTS = ROOT_PRIVATE_API_PATH + "/products";
     public static final String ROOT_PUBLIC_API_PRODUCTS = ROOT_PUBLIC_API_PATH + "/products";
     public static final String ROOT_PRIVATE_API_PRODUCTS_IMAGES = ROOT_PRIVATE_API_PATH + "/products/images";
-
+    public static final String ROOT_PRIVATE_API_AUTH = ROOT_PRIVATE_API_PATH + "/oauth/token";
+    public static final String ROOT_PUBLIC_API_AUTH =  ROOT_PUBLIC_API_PATH + "/oauth/token";
 
 }
 

@@ -49,6 +49,7 @@ spring:
     open-in-view: false
 
 
+
 app:
   cache.user.token: true
   mvc.async.request-timeout: 10000
@@ -67,4 +68,7 @@ app:
       mimeTypes: data:image/png;base64, data:image/jpg;base64
       maxLength: 1024000
       maxProductImages: 5
+  jwt:
+    secret: "e0b41325-42e5-4b3a-b995-b05c4e77c56d"
+    expirationTimeInMillis: 3600000    
 

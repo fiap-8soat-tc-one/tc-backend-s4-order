@@ -1,6 +1,7 @@
 package com.fiap.tc.infrastructure.presentation.controllers;
 
 import com.fiap.tc.infrastructure.core.security.property.OriginApiProperty;
+import com.fiap.tc.infrastructure.presentation.URLMapping;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/oauth/token")
+@RequestMapping(path = URLMapping.ROOT_PRIVATE_API_AUTH)
 @Api(tags = "token-endpoint", produces = APPLICATION_JSON_VALUE)
-public class TokenController {
+public class BackofficeController {
 
     @Autowired
     private OriginApiProperty originApiProperty;
