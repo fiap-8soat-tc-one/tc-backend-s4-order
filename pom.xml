@@ -32,7 +32,7 @@
         <caelum.stella.version>2.1.5</caelum.stella.version>
         <google.zxing.version>3.5.2</google.zxing.version>
         <sqids.version>0.1.0</sqids.version>
-        <sonar.organization>jcmdsbr</sonar.organization>
+        <sonar.organization>fiap-8soat-tc-one</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
