@@ -9,10 +9,9 @@ FROM openjdk:17-jdk-slim AS deploy
 
 LABEL org.opencontainers.image.title="TC Backend API"
 LABEL org.opencontainers.image.description="Backend API para o projeto TC da FIAP 8SOAT"
-LABEL org.opencontainers.image.version="1.0.0"
-LABEL org.opencontainers.image.url="https://github.com/fiap-8soat-tc-one/tc-backend-s2"
-LABEL org.opencontainers.image.source="https://github.com/fiap-8soat-tc-one/tc-backend-s2"
-LABEL org.opencontainers.image.created="2024-09-03"
+LABEL org.opencontainers.image.version="3.0.0"
+LABEL org.opencontainers.image.url="https://github.com/fiap-8soat-tc-one/tc-backend-s3"
+LABEL org.opencontainers.image.source="https://github.com/fiap-8soat-tc-one/tc-backend-s3"
 LABEL org.opencontainers.image.authors="FIAP 8SOAT TEAM 32"
 LABEL org.opencontainers.image.licenses="GNU General Public License v3.0"
 
