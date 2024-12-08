@@ -87,6 +87,10 @@ As informações dispostas no sistema de pedidos precisarão ser gerenciadas pel
 
 [Clique aqui para ser redirecionado para a wiki de configuração do ambiente Docker](https://github.com/fiap-8soat-tc-one/tc-backend-s2/blob/main/docs/docker/README.md)
 
+## Documentação do banco de dados :heavy_check_mark:
+
+[Clique aqui para ser redirecionado para a wiki de documentação do banco de dados](https://github.com/fiap-8soat-tc-one/tc-backend-s3/blob/feature/improvements-db-and-documentation/docs/database/README.md)
+
 ## Detalhamento sobre Stress Testing e Smoke Testing :heavy_check_mark:
 
 - **Dentro da pasta scripts/tests contém todos os scripts k6 para efetuar a execução os cenários de smoke-test e stress-test que foram realizados para configurar de maneira efetiva o os requests/limits da aplicação juntamente com o HPA**
