@@ -8,7 +8,10 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "customer")
+@Table(name = "customer", schema = "public",
+        indexes = {
+                @Index(name = "customer_index_document", columnList = "document"),
+        })
 public class CustomerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

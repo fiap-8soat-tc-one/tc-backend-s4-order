@@ -45,7 +45,7 @@ seguintes funcionalidades e operações de leitura e escrita:
 
 Abaixo uma breve documentação das tabelas do sistema, com base no diagrama de entidade relacionamento evidenciado:
 
-![image](https://github.com/fiap-8soat-tc-one/tc-backend-s3/blob/feature/improvements-db-and-documentation/assets/model-er.png)
+![image](https://github.com/fiap-8soat-tc-one/tc-backend-s3/blob/main/assets/model-er.png)
          
 - Gerenciamento de clientes é identificado basicamente pela tabela customer:
 <b>customer</b>: contem informações dos clientes do sistema. O principal campo desta tabela é <b>document</b> que 
@@ -63,3 +63,27 @@ Abaixo uma breve documentação das tabelas do sistema, com base no diagrama de 
   - order_payment: registra pagamentos associados a pedidos. Possui relacionamento com order_request
 
 ### Melhorias estrutura de banco de dados
+- Foi realizada uma analise das principais consultas usadas pela aplicação, com base nas informações abaixo, foi 
+  verificado que as tabelas abaixo e suas respectivas colunas poderiam ser agregados índices para melhorar sua 
+  performance, visando que o sistema possa ser mais escalável, e consiga comportar mais dados no decorrer do tempo, sem 
+  comprometer a performance e experiência do usuário.
+- Os campos do tipo uuid já são criados de forma indexada pelo próprio postgres. Os demais campos foi criada uma 
+  migration com a criação desses índices.
+
+| Tabela                         | Colunas                                                                           |
+|--------------------------------|-----------------------------------------------------------------------------------|
+| category                       | name, uuid                                                                        |
+| product                        | name, uuid                                                                        |
+| customer                       | uuid, document                                                                    |
+| order_request                  | uuid, status                                                                      |
+
+- Script migration com a criação dos índices:
+
+````
+set schema 'public';
+
+create index category_index_name on public.category (name);
+create index customer_index_document on public.customer (document);
+create index order_request_index_status on public.order_request (status);
+create index product_index_name on public.product (name);
+````
