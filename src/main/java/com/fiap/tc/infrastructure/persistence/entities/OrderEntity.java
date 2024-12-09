@@ -12,7 +12,10 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "order_request")
+@Table(name = "order_request", schema = "public",
+        indexes = {
+                @Index(name = "order_request_index_status", columnList = "status"),
+        })
 public class OrderEntity {
 
     @Id

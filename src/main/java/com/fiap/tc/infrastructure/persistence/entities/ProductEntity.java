@@ -12,7 +12,10 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "product")
+@Table(name = "product", schema = "public",
+        indexes = {
+                @Index(name = "product_index_name", columnList = "name"),
+        })
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

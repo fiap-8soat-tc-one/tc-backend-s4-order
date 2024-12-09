@@ -8,7 +8,11 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "category")
+@Table(name = "category", schema = "public",
+        indexes = {
+                @Index(name = "category_index_name", columnList = "name"),
+        })
+
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
