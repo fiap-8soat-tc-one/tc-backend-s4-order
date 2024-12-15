@@ -218,3 +218,7 @@ sequenceDiagram
 ## Requisitos não funcionais a serem implementados no futuro
 
 - Cadastro de usuário sistêmico, hoje temos apenas um usuário sistêmico, via carga do flyway.
+
+## Documentação do Kubernetes
+
+[Clique Aqui para ser redirecionado](https://github.com/fiap-8soat-tc-one/tc-backend-s3-k8s-iac/blob/main/README.md)
