@@ -89,7 +89,7 @@ As informações dispostas no sistema de pedidos precisarão ser gerenciadas pel
 
 ## Documentação do banco de dados :heavy_check_mark:
 
-[Clique aqui para ser redirecionado para a wiki de documentação do banco de dados](https://github.com/fiap-8soat-tc-one/tc-backend-s3/blob/main/docs/database/README.md)
+[Clique aqui para ser redirecionado para a wiki de documentação do banco de dados](hhttps://github.com/fiap-8soat-tc-one/tc-backend-s3-rds-iac/blob/main/README.md)
 
 ## Detalhamento sobre Stress Testing e Smoke Testing :heavy_check_mark:
 
