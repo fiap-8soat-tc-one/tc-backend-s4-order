@@ -23,10 +23,10 @@ spring:
   profiles:
     active: local
   application:
-    name: tc-backend-api
+    name: tc-order-backend-api
 
   datasource:
-    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:postgres}
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5433}/${DATABASE_NAME:postgres}
     username: ${DATABASE_USER:postgres}
     password: ${DATABASE_PASS:123456}
     driver-class-name: org.postgresql.Driver
@@ -48,8 +48,6 @@ spring:
         enable_lazy_load_no_trans: true
     open-in-view: false
 
-
-
 app:
   cache.user.token: true
   mvc.async.request-timeout: 10000
@@ -57,6 +55,19 @@ app:
     corePoolSize: 20
     maxPoolSize: 300
     queueCapacity: 600
+  auth.backoffice:
+    tokenExpiration: 85000
+  rest.client.oauth:
+    retry: 3
+    timeout: 5
+    endpoint: ${OAUTH_APP_HOST:http://localhost:8081}
+    clientId: dGNfY2xpZW50OnRlY2hfY2hhbGxlbmdlX2FwcA==
+    userName: ${AUTH_USER_ID:tc-order-user-app}
+    password: ${AUTH_USER_PASSWORD:12345678}
+  rest.client.backoffice:
+    retry: 3
+    timeout: 5
+    endpoint: ${BACKOFFICE_APP_HOST:http://localhost:8080}
   client:
     name: tc_client
     secret: $2a$12$aNBFov6o75DX51iVqd5mM.Z5S.Wi7xHMS3OzcU5386TWRi28Y691W
@@ -70,5 +81,4 @@ app:
       maxProductImages: 5
   jwt:
     secret: "e0b41325-42e5-4b3a-b995-b05c4e77c56d"
-    expirationTimeInMillis: 3600000    
-
+    expirationTimeInMillis: 3600000

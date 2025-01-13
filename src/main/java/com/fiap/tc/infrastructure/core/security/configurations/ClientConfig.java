@@ -8,9 +8,5 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "app.client")
 @Data
 public class ClientConfig {
-    private String name;
-    private String secret;
     private String signKey;
-    private Integer tokenExpirationTime;
-    private Integer refreshTokenExpirationTime;
 }
