@@ -24,6 +24,15 @@ spring:
     active: local
   application:
     name: tc-order-backend-api
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    timeout: 60000
+  rabbitmq:
+    addresses: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PORT:guest}
 
   datasource:
     url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5433}/${DATABASE_NAME:postgres}
@@ -81,5 +90,26 @@ app:
       maxLength: 1024000
       maxProductImages: 5
   jwt:
-    secret: "e0b41325-42e5-4b3a-b995-b05c4e77c56d"
+    secret: e0b41325-42e5-4b3a-b995-b05c4e77c56d
     expirationTimeInMillis: 3600000
+  rabbit:
+    config:
+      initialInterval: 20
+      maxInterval: 40
+      multiplier: 1
+      retries: 3
+      consumers: 10
+    bindings:
+      - topic: ha.tc-order-backend-api.order.event.order.created
+        routing-key: tc-order-backend-api.order.event.order.created
+        queue: ha.tc-order-backend-api.order.event.order.created.queue
+        dlx: ha.tc-order-backend-api.order.event.order.created.dlx
+        dlq: ha.tc-order-backend-api.order.event.order.created.dlq
+        declare: true
+
+      - topic: ha.tc-payment-backend-api-backend-api.payment.event.updated
+        routing-key: tc-payment-backend-api-backend-api.payment.event.updated
+        queue: ha.tc-payment-backend-api-backend-api.payment.event.updated.queue
+        dlx: ha.tc-payment-backend-api-backend-api.payment.event.updated.dlx
+        dlq: ha.tc-payment-backend-api-backend-api.payment.event.updated.dlq
+        declare: true
