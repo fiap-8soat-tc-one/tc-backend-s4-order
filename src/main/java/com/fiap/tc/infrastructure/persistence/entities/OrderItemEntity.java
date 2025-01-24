@@ -5,18 +5,21 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Data
-@Table(name = "item")
+@Table(name = "order_item")
 public class OrderItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_product", nullable = false)
-    private ProductEntity product;
+    @Column(name = "id_product", nullable = false)
+    private UUID idProduct;
+
+    @Column(name = "name")
+    private String name;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_order", nullable = false)

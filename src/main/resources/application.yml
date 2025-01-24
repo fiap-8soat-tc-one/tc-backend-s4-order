@@ -52,7 +52,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        show_sql: true
+        show_sql: false
         format_sql: true
         enable_lazy_load_no_trans: true
     open-in-view: false
@@ -107,9 +107,9 @@ app:
         dlq: ha.tc-order-backend-api.order.event.order.created.dlq
         declare: true
 
-      - topic: ha.tc-payment-backend-api-backend-api.payment.event.updated
-        routing-key: tc-payment-backend-api-backend-api.payment.event.updated
-        queue: ha.tc-payment-backend-api-backend-api.payment.event.updated.queue
-        dlx: ha.tc-payment-backend-api-backend-api.payment.event.updated.dlx
-        dlq: ha.tc-payment-backend-api-backend-api.payment.event.updated.dlq
+      - topic: ha.tc-payment-backend-api.payment.event.updated
+        routing-key: tc-payment-backend-api.payment.event.updated
+        queue: ha.tc-payment-backend-api.payment.event.updated.queue
+        dlx: ha.tc-payment-backend-api.payment.event.updated.dlx
+        dlq: ha.tc-payment-backend-api.payment.event.updated.dlq
         declare: true

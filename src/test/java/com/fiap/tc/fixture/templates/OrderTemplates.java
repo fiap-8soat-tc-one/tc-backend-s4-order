@@ -9,7 +9,10 @@ import com.fiap.tc.domain.entities.PaymentHistoric;
 import com.fiap.tc.domain.enums.OrderStatus;
 import com.fiap.tc.domain.enums.PaymentStatus;
 import com.fiap.tc.domain.enums.PaymentType;
-import com.fiap.tc.infrastructure.persistence.entities.*;
+import com.fiap.tc.infrastructure.persistence.entities.OrderEntity;
+import com.fiap.tc.infrastructure.persistence.entities.OrderItemEntity;
+import com.fiap.tc.infrastructure.persistence.entities.OrderPaymentEntity;
+import com.fiap.tc.infrastructure.persistence.entities.OrderPaymentHistoricEntity;
 import com.fiap.tc.infrastructure.persistence.entities.embeddable.Audit;
 import com.fiap.tc.infrastructure.presentation.requests.OrderItemRequest;
 import com.fiap.tc.infrastructure.presentation.requests.OrderPaymentRequest;
@@ -29,7 +32,7 @@ public class OrderTemplates implements TemplateLoader {
             {
                 add("id", random(Integer.class, range(1, 100)));
                 add("uuid", UUID.randomUUID());
-                add("customer", one(CustomerEntity.class, "valid"));
+                add("idCustomer", UUID.randomUUID());
                 add("status", random(OrderStatus.RECEIVED, OrderStatus.PREPARING, OrderStatus.READY,
                         OrderStatus.FINISHED, OrderStatus.PENDING));
                 add("audit", one(Audit.class, "valid"));
@@ -50,7 +53,7 @@ public class OrderTemplates implements TemplateLoader {
         Fixture.of(OrderItemEntity.class).addTemplate("valid", new Rule() {
             {
                 add("id", random(Integer.class, range(1, 100)));
-                add("product", one(ProductEntity.class, "valid"));
+                add("idProduct", UUID.randomUUID());
                 add("quantity", random(Integer.class, range(1, 10)));
                 add("unitValue", random(BigDecimal.valueOf(100.50), BigDecimal.valueOf(200.75)));
                 add("total", random(BigDecimal.valueOf(100.50), BigDecimal.valueOf(200.75)));

@@ -4,25 +4,39 @@ import com.fiap.tc.application.gateways.OrderGatewaySpec;
 import com.fiap.tc.application.gateways.PaymentLinkGatewaySpec;
 import com.fiap.tc.domain.entities.Order;
 import com.fiap.tc.domain.entities.OrderItem;
-import com.fiap.tc.infrastructure.amqp.dto.OrderCreatedMessage;
+import com.fiap.tc.domain.exceptions.NotFoundException;
 import com.fiap.tc.infrastructure.core.amqp.EventPublisher;
 import com.fiap.tc.infrastructure.core.amqp.builder.EventMessageBuilder;
 import com.fiap.tc.infrastructure.core.amqp.dto.EventMessage;
 import com.fiap.tc.infrastructure.core.amqp.mapping.Queues;
+import com.fiap.tc.infrastructure.services.CustomerServiceClient;
+import com.fiap.tc.infrastructure.workers.dto.OrderCreatedMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+import static java.lang.String.format;
+import static java.util.Objects.nonNull;
 
 @Service
 @RequiredArgsConstructor
 public class RegisterOrderUseCase {
     private final OrderGatewaySpec orderGateway;
     private final PaymentLinkGatewaySpec paymentLinkGateway;
+    private final CustomerServiceClient customerServiceClient;
     private final EventPublisher eventPublisher;
 
-    public Order register(UUID idCustomer, List<OrderItem> listOfItems) {
+    public Order register(String document, List<OrderItem> listOfItems) {
+        Optional<UUID> idCustomer = Optional.empty();
+        if (nonNull(document)) {
+            var customer = customerServiceClient.load(document).orElseThrow(() ->
+                    new NotFoundException(format("Customer %s not found!", document)));
+            idCustomer = Optional.of(customer.getId());
+        }
+
         var order = orderGateway.register(idCustomer, listOfItems);
         paymentLinkGateway.generate(order).ifPresent(order::setPaymentLink);
         var orderCreatedMessage = OrderCreatedMessage.builder().id(order.getId().toString()).build();
@@ -32,7 +46,7 @@ public class RegisterOrderUseCase {
 
     private void publishOrderCreated(Order order, OrderCreatedMessage orderCreatedMessage) {
         EventMessage<OrderCreatedMessage> message = new EventMessageBuilder()
-                .trackingId(String.format("order-created-queue-id-%s", order.getId().toString()))
+                .trackingId(format("order-created-queue-id-%s", order.getId().toString()))
                 .content(List.of(orderCreatedMessage))
                 .creationDate()
                 .build();

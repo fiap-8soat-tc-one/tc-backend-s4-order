@@ -1,6 +1,6 @@
-package com.fiap.tc.infrastructure.amqp.consumers;
+package com.fiap.tc.infrastructure.workers.consumers;
 
-import com.fiap.tc.infrastructure.amqp.dto.OrderCreatedMessage;
+import com.fiap.tc.infrastructure.workers.dto.OrderCreatedMessage;
 import com.fiap.tc.infrastructure.core.amqp.dto.EventMessage;
 import com.fiap.tc.infrastructure.core.amqp.mapping.Queues;
 import lombok.extern.slf4j.Slf4j;

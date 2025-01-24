@@ -47,4 +47,9 @@ public class CustomerTokenUtil {
         Claims claims = validateToken(token).getBody();
         return claims.get("id", String.class);
     }
+
+    public String getDocumentFromToken(String token) {
+        Claims claims = validateToken(token).getBody();
+        return claims.get("document", String.class);
+    }
 }

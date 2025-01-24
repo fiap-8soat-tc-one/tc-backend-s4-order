@@ -8,13 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface OrderGatewaySpec {
 
     Order load(UUID id);
 
-    Order register(UUID idCustomer, List<OrderItem> listOfItems);
+    Order register(Optional<UUID> idCustomer, List<OrderItem> listOfItems);
 
     Page<OrderList> list(List<String> status, Pageable pageable);
 

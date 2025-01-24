@@ -1,7 +1,7 @@
 package com.fiap.tc.infrastructure.persistence.entities;
 
-import com.fiap.tc.infrastructure.persistence.entities.embeddable.Audit;
 import com.fiap.tc.domain.enums.OrderStatus;
+import com.fiap.tc.infrastructure.persistence.entities.embeddable.Audit;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,9 +26,8 @@ public class OrderEntity {
     @Column(name = "order_number")
     private String orderNumber;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_customer")
-    private CustomerEntity customer;
+    @Column(name = "id_customer")
+    private UUID idCustomer;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy(value = "register_date DESC")

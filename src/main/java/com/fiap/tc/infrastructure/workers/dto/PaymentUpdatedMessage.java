@@ -1,4 +1,4 @@
-package com.fiap.tc.infrastructure.amqp.dto;
+package com.fiap.tc.infrastructure.workers.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
