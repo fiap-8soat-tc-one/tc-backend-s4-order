@@ -35,10 +35,11 @@ services:
   rabbitmq:
     image: rabbitmq:4.0.5-management-alpine
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:15672" ]
+      test: rabbitmq-diagnostics -q ping
       interval: 30s
       timeout: 10s
       retries: 5
+      start_period: 10s
     restart: always
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}

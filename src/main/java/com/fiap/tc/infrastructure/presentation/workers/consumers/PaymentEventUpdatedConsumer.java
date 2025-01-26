@@ -27,7 +27,7 @@ public class PaymentEventUpdatedConsumer {
                         .stream().findFirst()
                         .orElseThrow(() -> new RuntimeException("message without content"));
 
-        log.info("payment updated payload: {}", message);
+        log.info("payment.event.updated.queue message received payload: {}", message);
 
         updateStatusOrderUseCase.update(fromString(message.getTransactionNumber()),
                 from(message.getStatus()).getOrderStatus());
