@@ -67,18 +67,17 @@ public class OrderController {
     public ResponseEntity<OrderResponse> register(
             @RequestHeader("X-Authorization-Token") String accessToken,
             @ApiParam(value = "Order details for creating a new order",
-            required = true) @RequestBody @Valid OrderRequest request) {
+                    required = true) @RequestBody @Valid OrderRequest request) {
 
         var listOfItems = request.getOrderItems().stream().map(ORDER_ITEM_MAPPER::toDomain).toList();
-        String customerId = "";
 
         // anonymous flow
         if (accessToken == null) {
             return ok(ORDER_RESPONSE_MAPPER.fromDomain(registerOrderUseCase.register(null, listOfItems)));
         }
 
-        customerId = jwtUtil.getCustomerIdFromToken(accessToken);
-        return ok(ORDER_RESPONSE_MAPPER.fromDomain(registerOrderUseCase.register(UUID.fromString(customerId), listOfItems)));
+        var document = jwtUtil.getDocumentFromToken(accessToken);
+        return ok(ORDER_RESPONSE_MAPPER.fromDomain(registerOrderUseCase.register(document, listOfItems)));
     }
 
     @ApiOperation(value = "update order status", notes = "(Private Endpoint) This endpoint is responsible for updating the order status for tracking by both the kitchen and the customer (reflected on the system monitor).")

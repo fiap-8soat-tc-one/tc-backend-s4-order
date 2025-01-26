@@ -13,4 +13,13 @@ public enum PaymentStatus {
     private final String description;
     private final OrderStatus orderStatus;
 
+    public static PaymentStatus from(String status) {
+        for (PaymentStatus paymentStatus : PaymentStatus.values()) {
+            if (paymentStatus.name().equals(status)) {
+                return paymentStatus;
+            }
+        }
+        throw new IllegalArgumentException(String.format("Invalid status: %s", status));
+    }
+
 }

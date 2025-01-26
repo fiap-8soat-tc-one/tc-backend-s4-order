@@ -1,6 +1,6 @@
 # Server Configuration
 server:
-  port: 8080
+  port: 8082
   undertow:
     threads:
       worker: 30
@@ -23,10 +23,19 @@ spring:
   profiles:
     active: local
   application:
-    name: tc-backend-api
+    name: tc-order-backend-api
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    timeout: 60000
+  rabbitmq:
+    addresses: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PORT:guest}
 
   datasource:
-    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:postgres}
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5433}/${DATABASE_NAME:postgres}
     username: ${DATABASE_USER:postgres}
     password: ${DATABASE_PASS:123456}
     driver-class-name: org.postgresql.Driver
@@ -43,32 +52,59 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        show_sql: true
+        show_sql: false
         format_sql: true
         enable_lazy_load_no_trans: true
     open-in-view: false
 
-
-
 app:
+  cache.ttl: 40000
   cache.user.token: true
   mvc.async.request-timeout: 10000
   thread.async:
     corePoolSize: 20
     maxPoolSize: 300
     queueCapacity: 600
+  auth.backoffice:
+    tokenExpiration: 85000
+  rest.client.oauth:
+    retry: 3
+    timeout: 5
+    endpoint: ${OAUTH_APP_HOST:http://localhost:8081}
+    clientId: dGNfY2xpZW50OnRlY2hfY2hhbGxlbmdlX2FwcA==
+    userName: ${AUTH_USER_ID:tc-order-user-app}
+    password: ${AUTH_USER_PASSWORD:12345678}
+  rest.client.backoffice:
+    retry: 3
+    timeout: 5
+    endpoint: ${BACKOFFICE_APP_HOST:http://localhost:8080}
   client:
     name: tc_client
     secret: $2a$12$aNBFov6o75DX51iVqd5mM.Z5S.Wi7xHMS3OzcU5386TWRi28Y691W
     signKey: tech-challenge
     tokenExpirationTime: 86400
     refreshTokenExpirationTime: 86400
-  config:
-    upload:
-      mimeTypes: data:image/png;base64, data:image/jpg;base64
-      maxLength: 1024000
-      maxProductImages: 5
   jwt:
-    secret: "e0b41325-42e5-4b3a-b995-b05c4e77c56d"
-    expirationTimeInMillis: 3600000    
+    secret: e0b41325-42e5-4b3a-b995-b05c4e77c56d
+    expirationTimeInMillis: 3600000
+  rabbit:
+    config:
+      initialInterval: 20
+      maxInterval: 40
+      multiplier: 1
+      retries: 3
+      consumers: 10
+    bindings:
+      - topic: ha.tc-order-backend-api.order.event.order.created
+        routing-key: tc-order-backend-api.order.event.order.created
+        queue: ha.tc-order-backend-api.order.event.order.created.queue
+        dlx: ha.tc-order-backend-api.order.event.order.created.dlx
+        dlq: ha.tc-order-backend-api.order.event.order.created.dlq
+        declare: true
 
+      - topic: ha.tc-payment-backend-api.payment.event.updated
+        routing-key: tc-payment-backend-api.payment.event.updated
+        queue: ha.tc-payment-backend-api.payment.event.updated.queue
+        dlx: ha.tc-payment-backend-api.payment.event.updated.dlx
+        dlq: ha.tc-payment-backend-api.payment.event.updated.dlq
+        declare: true

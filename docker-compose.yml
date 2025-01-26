@@ -3,14 +3,13 @@ version: "3.9"
 services:
   postgres:
     image: postgres:15.3-alpine
-    container_name: tc-postgres
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - 5432:5432
+      - 5433:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -19,11 +18,48 @@ services:
       timeout: 5s
       retries: 5
 
-  tc-backend:
+  redis:
+    image: redis:7.4.2-alpine
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+    command: [ "redis-server" ]
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - cache_data:/data
+
+  rabbitmq:
+    image: rabbitmq:4.0.5-management-alpine
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbit_data:/rabbitmq/data/:/var/lib/rabbitmq/
+      - rabbit_log:/rabbitmq/log/:/var/log/rabbitmq
+
+  tc-order-backend:
     depends_on:
       postgres:
         condition: service_healthy
-    #    image: jcmds/fiap-8soat-tc
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
     build:
       context: .
     container_name: tc-backend
@@ -44,4 +80,10 @@ services:
       start_period: 10s
 volumes:
   pgdata:
+    external: false
+  cache_data:
+    external: false
+  rabbit_data:
+    external: false
+  rabbit_log:
     external: false
