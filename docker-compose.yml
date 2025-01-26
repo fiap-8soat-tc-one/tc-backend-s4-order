@@ -72,6 +72,10 @@ services:
       DATABASE_PASS: ${POSTGRES_PASSWORD}
       DATABASE_PORT: 5432
       DATABASE_NAME: ${POSTGRES_DB}
+      REDIS_HOST: ${REDIS_HOST}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/api/public/v1/health" ]
       interval: 30s
