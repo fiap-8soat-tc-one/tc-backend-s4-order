@@ -84,11 +84,6 @@ app:
     signKey: tech-challenge
     tokenExpirationTime: 86400
     refreshTokenExpirationTime: 86400
-  config:
-    upload:
-      mimeTypes: data:image/png;base64, data:image/jpg;base64
-      maxLength: 1024000
-      maxProductImages: 5
   jwt:
     secret: e0b41325-42e5-4b3a-b995-b05c4e77c56d
     expirationTimeInMillis: 3600000

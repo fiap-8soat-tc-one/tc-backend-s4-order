@@ -1,4 +1,4 @@
-package com.fiap.tc.infrastructure.workers.dto;
+package com.fiap.tc.infrastructure.presentation.workers.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,7 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderCreatedMessage implements Serializable {
-    private String id;
+public class PaymentUpdatedMessage implements Serializable {
+    private String transactionNumber;
+    private String status;
 }

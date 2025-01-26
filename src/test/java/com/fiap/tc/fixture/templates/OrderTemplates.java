@@ -11,8 +11,6 @@ import com.fiap.tc.domain.enums.PaymentStatus;
 import com.fiap.tc.domain.enums.PaymentType;
 import com.fiap.tc.infrastructure.persistence.entities.OrderEntity;
 import com.fiap.tc.infrastructure.persistence.entities.OrderItemEntity;
-import com.fiap.tc.infrastructure.persistence.entities.OrderPaymentEntity;
-import com.fiap.tc.infrastructure.persistence.entities.OrderPaymentHistoricEntity;
 import com.fiap.tc.infrastructure.persistence.entities.embeddable.Audit;
 import com.fiap.tc.infrastructure.presentation.requests.OrderItemRequest;
 import com.fiap.tc.infrastructure.presentation.requests.OrderPaymentRequest;
@@ -108,32 +106,6 @@ public class OrderTemplates implements TemplateLoader {
 
             }
         });
-
-        Fixture.of(OrderPaymentHistoricEntity.class).addTemplate("valid", new Rule() {
-            {
-                add("id", random(Integer.class, range(1, 100)));
-                add("status", random(PaymentStatus.APPROVED, PaymentStatus.ERROR));
-                add("registerDate", LocalDateTime.now());
-                add("transactionMessage", random("transaction confirmed", "transaction error timeout"));
-
-            }
-        });
-        Fixture.of(OrderPaymentEntity.class).addTemplate("valid", new Rule() {
-            {
-                add("id", random(Integer.class, range(1, 100)));
-                add("transactionNumber", "7ba2a960-2354-466f-8868-6ad713742407");
-                add("transactionMessage", random("transaction successfully", "transaction error",
-                        "transaction refused"));
-                add("transactionDocument", random("52735617017", "03014336076", "90819176095"));
-                add("status", random(PaymentStatus.APPROVED, PaymentStatus.ERROR));
-                add("paymentType", random(PaymentType.PIX, PaymentType.CREDIT, PaymentType.DEBIT));
-                add("total", random(BigDecimal.valueOf(100.50), BigDecimal.valueOf(200.75)));
-                add("audit", one(Audit.class, "valid"));
-                add("paymentHistoric", has(2).of(OrderPaymentHistoricEntity.class, "valid"));
-
-            }
-        });
-
 
         Fixture.of(PaymentHistoric.class).addTemplate("valid", new Rule() {
             {

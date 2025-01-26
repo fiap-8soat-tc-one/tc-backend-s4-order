@@ -10,7 +10,7 @@ import com.fiap.tc.infrastructure.core.amqp.builder.EventMessageBuilder;
 import com.fiap.tc.infrastructure.core.amqp.dto.EventMessage;
 import com.fiap.tc.infrastructure.core.amqp.mapping.Queues;
 import com.fiap.tc.infrastructure.services.CustomerServiceClient;
-import com.fiap.tc.infrastructure.workers.dto.OrderCreatedMessage;
+import com.fiap.tc.infrastructure.presentation.workers.dto.OrderCreatedMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
