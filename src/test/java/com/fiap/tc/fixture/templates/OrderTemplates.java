@@ -54,7 +54,6 @@ public class OrderTemplates implements TemplateLoader {
 
         Fixture.of(OrderRequest.class).addTemplate("valid", new Rule() {
             {
-                add("idCustomer", UUID.randomUUID());
                 add("orderItems", has(2).of(OrderItemRequest.class, "valid"));
             }
         });
