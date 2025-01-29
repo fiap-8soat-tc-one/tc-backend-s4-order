@@ -38,7 +38,7 @@
     </properties>
 
     <dependencies>
-        
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -190,19 +190,6 @@
         </dependency>
 
         <dependency>
-            <groupId>br.com.caelum.stella</groupId>
-            <artifactId>caelum-stella-core</artifactId>
-            <version>${caelum.stella.version}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>br.com.caelum.stella</groupId>
-            <artifactId>caelum-stella-bean-validation</artifactId>
-            <version>${caelum.stella.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
@@ -262,9 +249,13 @@
                         <include>com/fiap/tc/application/usecases/**/*</include>
                         <include>com/fiap/tc/infrastructure/gateways/**</include>
                         <include>com/fiap/tc/infrastructure/services/**</include>
+                        <include>com/fiap/tc/infrastructure/persistence/repositories/**</include>
+                        <include>com/fiap/tc/infrastructure/presentation/controllers/**</include>
+                        <include>com/fiap/tc/infrastructure/presentation/workers/**</include>
                     </includes>
                     <excludes>
-                        <exclude>com/fiap/tc/infrastructure/gateways/validators/upload/ProductImageValidatorWrapper*</exclude>
+                        <exclude>com/fiap/tc/infrastructure/gateways/validators/upload/ProductImageValidatorWrapper*
+                        </exclude>
                         <exclude>com/fiap/tc/infrastructure/gateways/mappers/**/*</exclude>
                     </excludes>
                 </configuration>

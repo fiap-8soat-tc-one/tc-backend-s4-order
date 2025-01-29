@@ -21,5 +21,5 @@ public class EventMessage<T> implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime creationDate;
     private Collection<T> content;
-    private String trackingId;
+
 }

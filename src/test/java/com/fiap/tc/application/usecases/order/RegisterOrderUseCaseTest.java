@@ -68,7 +68,7 @@ public class RegisterOrderUseCaseTest extends FixtureTest {
 
         //Assertions
         assertEquals(order, orderResult);
-        verify(eventPublisherMock, times(1)).execute(any(), any());
+        verify(eventPublisherMock, times(1)).execute(any(), any(), any());
         verify(customerServiceClientMock, times(1)).load(document);
         verify(paymentLinkGatewaySpecMock, times(1)).generate(any());
         verify(orderGatewaySpecMock, times(1)).register(any(), any());
@@ -95,12 +95,13 @@ public class RegisterOrderUseCaseTest extends FixtureTest {
         // Arrange
         when(paymentLinkGatewaySpecMock.generate(any())).thenReturn(Optional.of(paymentLink));
         when(orderGatewaySpecMock.register(any(), any())).thenReturn(order);
+
         // Act
         var orderResult = registerOrderUseCase.register(null, orderItems);
 
         //Assertions
         assertEquals(order, orderResult);
-        verify(eventPublisherMock, times(1)).execute(any(), any());
+        verify(eventPublisherMock, times(1)).execute(any(), any(), any());
         verify(paymentLinkGatewaySpecMock, times(1)).generate(any());
         verify(orderGatewaySpecMock, times(1)).register(any(), any());
 
