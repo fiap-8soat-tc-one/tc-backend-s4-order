@@ -2,6 +2,7 @@ package com.fiap.tc.infrastructure.services;
 
 import com.fiap.tc.infrastructure.core.config.RestClientOAuthConfig;
 import com.fiap.tc.infrastructure.dto.AuthDetail;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -12,15 +13,12 @@ import java.time.Duration;
 import static java.lang.String.format;
 
 @Service
+@RequiredArgsConstructor
 public class AuthLoginClient {
     static final String RESOURCE = "/oauth/token";
+
     private final WebClient webClientOAuth;
     private final RestClientOAuthConfig restClientConfig;
-
-    public AuthLoginClient(WebClient webClientOAuth, RestClientOAuthConfig restClientConfig) {
-        this.webClientOAuth = webClientOAuth;
-        this.restClientConfig = restClientConfig;
-    }
 
     public AuthDetail execute() {
         return this.webClientOAuth.method(HttpMethod.POST).uri(RESOURCE)

@@ -4,6 +4,7 @@ import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
 import com.fiap.tc.domain.entities.Order;
+import com.fiap.tc.domain.entities.OrderItem;
 import com.fiap.tc.domain.enums.OrderStatus;
 import com.fiap.tc.infrastructure.persistence.entities.OrderEntity;
 import com.fiap.tc.infrastructure.persistence.entities.OrderItemEntity;
@@ -41,10 +42,22 @@ public class OrderTemplates implements TemplateLoader {
             }
         });
 
+        Fixture.of(OrderItem.class).addTemplate("valid", new Rule() {
+            {
+                add("idProduct", UUID.randomUUID());
+                add("name", random("hamburger", "cake", "pizza"));
+                add("quantity", random(Integer.class, range(1, 10)));
+                add("unitValue", random(BigDecimal.valueOf(100.50), BigDecimal.valueOf(200.75)));
+                add("total", random(BigDecimal.valueOf(100.50), BigDecimal.valueOf(200.75)));
+
+            }
+        });
+
         Fixture.of(OrderItemEntity.class).addTemplate("valid", new Rule() {
             {
                 add("id", random(Integer.class, range(1, 100)));
                 add("idProduct", UUID.randomUUID());
+                add("name", random("hamburger", "cake", "pizza"));
                 add("quantity", random(Integer.class, range(1, 10)));
                 add("unitValue", random(BigDecimal.valueOf(100.50), BigDecimal.valueOf(200.75)));
                 add("total", random(BigDecimal.valueOf(100.50), BigDecimal.valueOf(200.75)));
