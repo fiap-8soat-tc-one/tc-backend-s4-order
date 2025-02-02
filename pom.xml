@@ -114,6 +114,13 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
@@ -250,12 +257,9 @@
                         <include>com/fiap/tc/infrastructure/gateways/**</include>
                         <include>com/fiap/tc/infrastructure/services/**</include>
                         <include>com/fiap/tc/infrastructure/persistence/repositories/**</include>
-                        <include>com/fiap/tc/infrastructure/presentation/controllers/**</include>
-                        <include>com/fiap/tc/infrastructure/presentation/workers/**</include>
+                        <include>com/fiap/tc/infrastructure/presentation/workers/consumers/**</include>
                     </includes>
                     <excludes>
-                        <exclude>com/fiap/tc/infrastructure/gateways/validators/upload/ProductImageValidatorWrapper*
-                        </exclude>
                         <exclude>com/fiap/tc/infrastructure/gateways/mappers/**/*</exclude>
                     </excludes>
                 </configuration>

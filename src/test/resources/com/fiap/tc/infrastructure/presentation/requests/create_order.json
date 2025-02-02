@@ -1,0 +1,21 @@
+{
+  "id_customer": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "order_items": [
+    {
+      "id_product": "b1f859e6-07df-4b67-a1cd-74d946442207",
+      "quantity": 1
+    },
+    {
+      "id_product": "68a589ce-979f-4350-bcd6-ca049f3beb16",
+      "quantity": 2
+    },
+    {
+      "id_product": "56199d36-969b-4e1b-9515-f84ffed6a19b",
+      "quantity": 1
+    },
+    {
+      "id_product": "7b3c010c-9f03-4a56-8c85-b519a5f6b86e",
+      "quantity": 1
+    }
+  ]
+}
