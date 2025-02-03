@@ -2,8 +2,8 @@ package com.fiap.tc.infrastructure.presentation.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fiap.tc.infrastructure.presentation.requests.OrderRequest;
+import com.fiap.tc.infrastructure.presentation.requests.OrderStatusRequest;
 import com.fiap.tc.infrastructure.presentation.response.OrderResponse;
-import com.fiap.tc.util.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.fiap.tc.util.TestUtils.readResourceFileAsString;
+import static java.lang.String.format;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -22,11 +24,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 public class OrderControllerIT {
 
-    private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
-            ".eyJ1c2VyX25hbWUiOiJteWxsZXIiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwicHJvZmlsZSI6IkFETUlOSVNUUkFUT1IiLCJuYW1lIjoiTXlsbGVyIFNha2FndWNoaSIsImV4cCI6MTczODYxODg4MCwidXVpZCI6IjM0ODQ4ZTIwLTk2NzktMTFlYi05ZTEzLTAyNDJhYzExMDAwMiIsImF1dGhvcml0aWVzIjpbIkRFTEVURV9DVVNUT01FUlMiLCJSRUdJU1RFUl9PUkRFUlMiLCJMSVNUX1VTRVJTIiwiU0VBUkNIX09SREVSUyIsIkVESVRfT1JERVJTIiwiU0VBUkNIX1BST0RVQ1RTIiwiRURJVF9VU0VSUyIsIkRFTEVURV9QUk9EVUNUUyIsIkRFTEVURV9PUkRFUlMiLCJSRUdJU1RFUl9DVVNUT01FUlMiLCJERUxFVEVfVVNFUlMiLCJMSVNUX1BST0RVQ1RTIiwiU0VBUkNIX0NBVEVHT1JJRVMiLCJMSVNUX0NBVEVHT1JJRVMiLCJMSVNUX0NVU1RPTUVSUyIsIlVQREFURV9TVEFUVVNfT1JERVJTIiwiTElTVF9PUkRFUlMiLCJFRElUX0NVU1RPTUVSUyIsIlJFR0lTVEVSX1VTRVJTIiwiU0VBUkNIX0NVU1RPTUVSUyIsIkVESVRfQ0FURUdPUklFUyIsIlJFR0lTVEVSX0NBVEVHT1JJRVMiLCJQUk9DRVNTX1BBWU1FTlRTIiwiREVMRVRFX0NBVEVHT1JJRVMiLCJSRUdJU1RFUl9QUk9EVUNUUyIsIkVESVRfUFJPRFVDVFMiLCJTRUFSQ0hfVVNFUlMiXSwianRpIjoiYzJiY2E2ZjYtN2E0ZS00NDljLTk1NTgtZjdjMjMzNmZlYjg3IiwiY2xpZW50X2lkIjoidGNfY2xpZW50In0.i_jGVBuEt2ym5stG6aHgT7QzwDcbkZ3AVldk-XGEeOU";
-    private static final String CUSTOMER_TOKEN = "eyJhbGciOiJIUzUxMiJ9" +
-            ".eyJzdWIiOiI4ODQwNDA3MTAzOSIsImlkIjoiM2ZhODVmNjQtNTcxNy00NTYyLWIzZmMtMmM5NjNmNjZhZmE2IiwibmFtZSI6Ik15bGxlciBTYWthZ3VjaGkiLCJlbWFpbCI6Im15bGxlcnNha2FndWNoaUBnbWFpbC5jb20iLCJkb2N1bWVudCI6Ijg4NDA0MDcxMDM5IiwiaWF0IjoxNzM4NTMxMjgyLCJleHAiOjE3Mzg1MzQ4ODJ9.NIllQcMoiPv1JM4tX7tMdKolujzErxZjf_bqs2a7u4Gef5wGuzFM1Wn90MJSMpFX37fSYdr0iAVj1UK02mLptw";
-    private static final String UPDATE_STATUS_PREPARING_JSON = "{ \"id\": \"%s\", \"status\": \"PREPARING\"}";
+    private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJteWxsZXIiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwicHJvZmlsZSI6IkFETUlOSVNUUkFUT1IiLCJuYW1lIjoiTXlsbGVyIFNha2FndWNoaSIsImV4cCI6MTczODYyOTAxMSwidXVpZCI6IjM0ODQ4ZTIwLTk2NzktMTFlYi05ZTEzLTAyNDJhYzExMDAwMiIsImF1dGhvcml0aWVzIjpbIkRFTEVURV9DVVNUT01FUlMiLCJSRUdJU1RFUl9PUkRFUlMiLCJMSVNUX1VTRVJTIiwiU0VBUkNIX09SREVSUyIsIkVESVRfT1JERVJTIiwiU0VBUkNIX1BST0RVQ1RTIiwiRURJVF9VU0VSUyIsIkRFTEVURV9QUk9EVUNUUyIsIkRFTEVURV9PUkRFUlMiLCJSRUdJU1RFUl9DVVNUT01FUlMiLCJERUxFVEVfVVNFUlMiLCJMSVNUX1BST0RVQ1RTIiwiU0VBUkNIX0NBVEVHT1JJRVMiLCJMSVNUX0NBVEVHT1JJRVMiLCJMSVNUX0NVU1RPTUVSUyIsIlVQREFURV9TVEFUVVNfT1JERVJTIiwiTElTVF9PUkRFUlMiLCJFRElUX0NVU1RPTUVSUyIsIlJFR0lTVEVSX1VTRVJTIiwiU0VBUkNIX0NVU1RPTUVSUyIsIkVESVRfQ0FURUdPUklFUyIsIlJFR0lTVEVSX0NBVEVHT1JJRVMiLCJQUk9DRVNTX1BBWU1FTlRTIiwiREVMRVRFX0NBVEVHT1JJRVMiLCJSRUdJU1RFUl9QUk9EVUNUUyIsIkVESVRfUFJPRFVDVFMiLCJTRUFSQ0hfVVNFUlMiXSwianRpIjoiOWY4OGFmYjYtZGZiOS00ZDFhLTlkNzktYWI5OTRkMjFhMWYxIiwiY2xpZW50X2lkIjoidGNfY2xpZW50In0.SvmqrIvLMEy-VKbPap8tBIvb_Nx2r8TrxiQEQeMSn8w";
+    private static final String CUSTOMER_TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4ODQwNDA3MTAzOSIsImlkIjoiM2ZhODVmNjQtNTcxNy00NTYyLWIzZmMtMmM5NjNmNjZhZmE2IiwibmFtZSI6Ik15bGxlciBTYWthZ3VjaGkiLCJlbWFpbCI6Im15bGxlcnNha2FndWNoaUBnbWFpbC5jb20iLCJkb2N1bWVudCI6Ijg4NDA0MDcxMDM5IiwiaWF0IjoxNzM4NTQyNjQ2LCJleHAiOjE3Mzg1NDYyNDZ9.rbAhpg7vWA9ZR4K5sNbv9FBMCVfmbdlfVBlcIYfzfRilOdcymljvnPt_zy6u1mLDDd1Uh3ZAIsJSYSJThfBlWw";
+
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -43,7 +43,7 @@ public class OrderControllerIT {
     private OrderResponse createOrder() throws Exception {
         String responseJson = mockMvc.perform(post("/api/public/v1/orders")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(TestUtils.readResourceFileAsString(OrderRequest.class, "create_order.json"))
+                        .content(readResourceFileAsString(OrderRequest.class, "create_order.json"))
                         .header("X-Authorization-Token", CUSTOMER_TOKEN))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -99,9 +99,13 @@ public class OrderControllerIT {
     }
 
     private void updateOrderStatusToPreparing(OrderResponse orderResponse) throws Exception {
+
+        var orderStatusRequest = readResourceFileAsString(OrderStatusRequest.class, "order_status_update.json");
+        var request = format(orderStatusRequest, orderResponse.getId());
+
         mockMvc.perform(put("/api/private/v1/orders/status")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(String.format(UPDATE_STATUS_PREPARING_JSON, orderResponse.getId()))
+                        .content(request)
                         .header("Authorization", getBackofficeTokenTest()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("SUCCESS"));
@@ -138,7 +142,7 @@ public class OrderControllerIT {
     }
 
     private Object getBackofficeTokenTest() {
-        return String.format("Bearer %s", TOKEN);
+        return format("Bearer %s", TOKEN);
     }
 
 
