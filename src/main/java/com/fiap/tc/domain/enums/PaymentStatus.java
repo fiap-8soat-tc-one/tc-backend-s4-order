@@ -6,6 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum PaymentStatus {
+    WAITING("order payment pending", OrderStatus.PENDING),
     APPROVED("order payment approved", OrderStatus.PREPARING),
     REFUSED("payment refused order pending", OrderStatus.PENDING),
     ERROR("order payment error", OrderStatus.PENDING);

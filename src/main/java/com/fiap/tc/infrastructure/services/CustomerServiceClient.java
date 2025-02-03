@@ -17,7 +17,7 @@ import static java.lang.String.format;
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceClient {
-    static final String RESOURCE = "/api/public/v1/customers/%s";
+    static final String RESOURCE = "/api/private/v1/customers/%s";
     private final WebClient webClientBackoffice;
     private final RestClientBackofficeConfig restClientConfig;
     private final AuthTokenManager authTokenManager;

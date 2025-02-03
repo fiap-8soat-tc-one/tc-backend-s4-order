@@ -9,8 +9,8 @@ import com.fiap.tc.infrastructure.core.amqp.EventPublisher;
 import com.fiap.tc.infrastructure.core.amqp.builder.EventMessageBuilder;
 import com.fiap.tc.infrastructure.core.amqp.dto.EventMessage;
 import com.fiap.tc.infrastructure.core.amqp.mapping.Queues;
-import com.fiap.tc.infrastructure.services.CustomerServiceClient;
 import com.fiap.tc.infrastructure.presentation.workers.dto.OrderCreatedMessage;
+import com.fiap.tc.infrastructure.services.CustomerServiceClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -46,10 +46,9 @@ public class RegisterOrderUseCase {
 
     private void publishOrderCreated(Order order, OrderCreatedMessage orderCreatedMessage) {
         EventMessage<OrderCreatedMessage> message = new EventMessageBuilder()
-                .trackingId(format("order-created-queue-id-%s", order.getId().toString()))
                 .content(List.of(orderCreatedMessage))
                 .creationDate()
                 .build();
-        eventPublisher.execute(message, Queues.ORDER_CREATED_QUEUE);
+        eventPublisher.execute(message, Queues.ORDER_CREATED_QUEUE, format("order-created-queue-id-%s", order.getId().toString()));
     }
 }

@@ -4,7 +4,6 @@ import com.fiap.tc.domain.entities.Product;
 import com.fiap.tc.infrastructure.core.config.RestClientBackofficeConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -26,7 +25,7 @@ public class ProductServiceClient {
 
     @Cacheable(value = "product", key = "#id")
     public Optional<Product> load(UUID id) {
-        return Optional.ofNullable(this.webClientBackoffice.method(HttpMethod.GET).uri(format(RESOURCE, id.toString()))
+        return Optional.ofNullable(this.webClientBackoffice.get().uri(format(RESOURCE, id.toString()))
                 .headers(header -> {
                     header.set("Authorization", format("Bearer %s", authTokenManager.getToken()));
                     header.set("Accept", MediaType.APPLICATION_JSON_VALUE);

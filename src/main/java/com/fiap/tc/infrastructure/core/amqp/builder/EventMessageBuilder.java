@@ -30,7 +30,7 @@ public class EventMessageBuilder<T> {
     }
 
     public EventMessage build() {
-        return new EventMessage<T>(this.creationDate, this.object, this.trackingId);
+        return new EventMessage<T>(this.creationDate, this.object);
     }
 
 }
