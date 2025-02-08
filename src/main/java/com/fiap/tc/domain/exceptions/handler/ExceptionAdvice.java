@@ -1,14 +1,15 @@
 package com.fiap.tc.domain.exceptions.handler;
 
-import com.fiap.tc.infrastructure.presentation.response.DefaultResponse;
 import com.fiap.tc.domain.exceptions.BadRequestException;
 import com.fiap.tc.domain.exceptions.NotFoundException;
+import com.fiap.tc.infrastructure.presentation.response.DefaultResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.oauth2.common.exceptions.UnauthorizedUserException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -93,8 +94,20 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
         return status(NOT_FOUND).body(response);
     }
 
+    @ExceptionHandler(value = UnauthorizedUserException.class)
+    public ResponseEntity<DefaultResponse> unauthorizedExceptionHandler(UnauthorizedUserException e) {
+
+        log.warn(e.getMessage(), e);
+
+        DefaultResponse response = new DefaultResponse();
+        response.setStatus(UNAUTHORIZED.name());
+        response.setMessage(e.getMessage());
+
+        return status(UNAUTHORIZED).body(response);
+    }
+
     @ExceptionHandler(value = AccessDeniedException.class)
-    public ResponseEntity<DefaultResponse> unauthorizedExceptionHandler(AccessDeniedException e) {
+    public ResponseEntity<DefaultResponse> forbiddenExceptionHandler(AccessDeniedException e) {
 
         log.warn(e.getMessage(), e);
 
