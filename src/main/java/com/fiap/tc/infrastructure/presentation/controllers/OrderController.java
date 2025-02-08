@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,7 +66,7 @@ public class OrderController {
     })
     @PostMapping(path = URLMapping.ROOT_PUBLIC_API_ORDERS, produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderResponse> register(
-            @RequestHeader("X-Authorization-Token") String accessToken,
+            @Header("X-Authorization-Token") String accessToken,
             @ApiParam(value = "Order details for creating a new order",
                     required = true) @RequestBody @Valid OrderRequest request) {
 
