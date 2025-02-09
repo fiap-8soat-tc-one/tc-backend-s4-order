@@ -1,8 +1,6 @@
 package com.fiap.tc.infrastructure.presentation.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fiap.tc.infrastructure.presentation.requests.OrderRequest;
-import com.fiap.tc.infrastructure.presentation.requests.OrderStatusRequest;
 import com.fiap.tc.infrastructure.presentation.response.OrderResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,8 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 public class OrderControllerIT {
 
-    private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJteWxsZXIiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwicHJvZmlsZSI6IkFETUlOSVNUUkFUT1IiLCJuYW1lIjoiTXlsbGVyIFNha2FndWNoaSIsImV4cCI6MTczODYyOTAxMSwidXVpZCI6IjM0ODQ4ZTIwLTk2NzktMTFlYi05ZTEzLTAyNDJhYzExMDAwMiIsImF1dGhvcml0aWVzIjpbIkRFTEVURV9DVVNUT01FUlMiLCJSRUdJU1RFUl9PUkRFUlMiLCJMSVNUX1VTRVJTIiwiU0VBUkNIX09SREVSUyIsIkVESVRfT1JERVJTIiwiU0VBUkNIX1BST0RVQ1RTIiwiRURJVF9VU0VSUyIsIkRFTEVURV9QUk9EVUNUUyIsIkRFTEVURV9PUkRFUlMiLCJSRUdJU1RFUl9DVVNUT01FUlMiLCJERUxFVEVfVVNFUlMiLCJMSVNUX1BST0RVQ1RTIiwiU0VBUkNIX0NBVEVHT1JJRVMiLCJMSVNUX0NBVEVHT1JJRVMiLCJMSVNUX0NVU1RPTUVSUyIsIlVQREFURV9TVEFUVVNfT1JERVJTIiwiTElTVF9PUkRFUlMiLCJFRElUX0NVU1RPTUVSUyIsIlJFR0lTVEVSX1VTRVJTIiwiU0VBUkNIX0NVU1RPTUVSUyIsIkVESVRfQ0FURUdPUklFUyIsIlJFR0lTVEVSX0NBVEVHT1JJRVMiLCJQUk9DRVNTX1BBWU1FTlRTIiwiREVMRVRFX0NBVEVHT1JJRVMiLCJSRUdJU1RFUl9QUk9EVUNUUyIsIkVESVRfUFJPRFVDVFMiLCJTRUFSQ0hfVVNFUlMiXSwianRpIjoiOWY4OGFmYjYtZGZiOS00ZDFhLTlkNzktYWI5OTRkMjFhMWYxIiwiY2xpZW50X2lkIjoidGNfY2xpZW50In0.SvmqrIvLMEy-VKbPap8tBIvb_Nx2r8TrxiQEQeMSn8w";
-    private static final String CUSTOMER_TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4ODQwNDA3MTAzOSIsImlkIjoiM2ZhODVmNjQtNTcxNy00NTYyLWIzZmMtMmM5NjNmNjZhZmE2IiwibmFtZSI6Ik15bGxlciBTYWthZ3VjaGkiLCJlbWFpbCI6Im15bGxlcnNha2FndWNoaUBnbWFpbC5jb20iLCJkb2N1bWVudCI6Ijg4NDA0MDcxMDM5IiwiaWF0IjoxNzM4NTQyNjQ2LCJleHAiOjE3Mzg1NDYyNDZ9.rbAhpg7vWA9ZR4K5sNbv9FBMCVfmbdlfVBlcIYfzfRilOdcymljvnPt_zy6u1mLDDd1Uh3ZAIsJSYSJThfBlWw";
+    private static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJteWxsZXIiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwicHJvZmlsZSI6IkFETUlOSVNUUkFUT1IiLCJuYW1lIjoiTXlsbGVyIFNha2FndWNoaSIsImV4cCI6MTczOTIwMTg4OSwidXVpZCI6IjM0ODQ4ZTIwLTk2NzktMTFlYi05ZTEzLTAyNDJhYzExMDAwMiIsImF1dGhvcml0aWVzIjpbIkRFTEVURV9DVVNUT01FUlMiLCJSRUdJU1RFUl9PUkRFUlMiLCJMSVNUX1VTRVJTIiwiU0VBUkNIX09SREVSUyIsIkVESVRfT1JERVJTIiwiU0VBUkNIX1BST0RVQ1RTIiwiRURJVF9VU0VSUyIsIkRFTEVURV9QUk9EVUNUUyIsIkRFTEVURV9PUkRFUlMiLCJSRUdJU1RFUl9DVVNUT01FUlMiLCJERUxFVEVfVVNFUlMiLCJMSVNUX1BST0RVQ1RTIiwiU0VBUkNIX0NBVEVHT1JJRVMiLCJMSVNUX0NBVEVHT1JJRVMiLCJMSVNUX0NVU1RPTUVSUyIsIlVQREFURV9TVEFUVVNfT1JERVJTIiwiTElTVF9PUkRFUlMiLCJFRElUX0NVU1RPTUVSUyIsIlJFR0lTVEVSX1VTRVJTIiwiU0VBUkNIX0NVU1RPTUVSUyIsIkVESVRfQ0FURUdPUklFUyIsIlJFR0lTVEVSX0NBVEVHT1JJRVMiLCJQUk9DRVNTX1BBWU1FTlRTIiwiREVMRVRFX0NBVEVHT1JJRVMiLCJSRUdJU1RFUl9QUk9EVUNUUyIsIkVESVRfUFJPRFVDVFMiLCJTRUFSQ0hfVVNFUlMiXSwianRpIjoiMzA4Y2RhMGMtMzk5Mi00MzZkLTllMGQtNzVjZTNjMjY3ZGZiIiwiY2xpZW50X2lkIjoidGNfY2xpZW50In0.QaiYu3HxrAVzQDOV0JFqnRK1H1LRS-1pRcM1XiyhJqg";
+    private static final String CUSTOMER_TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4ODQwNDA3MTAzOSIsImlkIjoiM2ZhODVmNjQtNTcxNy00NTYyLWIzZmMtMmM5NjNmNjZhZmE2IiwibmFtZSI6Ik15bGxlciBTYWthZ3VjaGkiLCJlbWFpbCI6Im15bGxlcnNha2FndWNoaUBnbWFpbC5jb20iLCJkb2N1bWVudCI6Ijg4NDA0MDcxMDM5IiwiaWF0IjoxNzM5MTE1NTI0LCJleHAiOjE3MzkxMTkxMjR9.grf1C-PQKciSt3lT8kdG8jyTpDs34DRCwbmoov50mXcrnc3ezvrN3LY53qX6BCjlb2GN6If1dol6znTFHS4StA";
 
 
     @Autowired
@@ -43,7 +41,7 @@ public class OrderControllerIT {
     private OrderResponse createOrder() throws Exception {
         String responseJson = mockMvc.perform(post("/api/public/v1/orders")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(readResourceFileAsString(OrderRequest.class, "create_order.json"))
+                        .content(readResourceFileAsString("requests/create_order.json"))
                         .header("X-Authorization-Token", CUSTOMER_TOKEN))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -100,7 +98,7 @@ public class OrderControllerIT {
 
     private void updateOrderStatusToPreparing(OrderResponse orderResponse) throws Exception {
 
-        var orderStatusRequest = readResourceFileAsString(OrderStatusRequest.class, "order_status_update.json");
+        var orderStatusRequest = readResourceFileAsString("requests/order_status_update.json");
         var request = format(orderStatusRequest, orderResponse.getId());
 
         mockMvc.perform(put("/api/private/v1/orders/status")

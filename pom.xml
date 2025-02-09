@@ -34,8 +34,6 @@
         <sqids.version>0.1.0</sqids.version>
         <sonar.organization>fiap-8soat-tc-one</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <cucumber.version>7.2.3</cucumber.version>
-        <junit.platform.suite>1.9.3</junit.platform.suite>
     </properties>
 
     <dependencies>
@@ -80,12 +78,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <!--<exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.24.2</version>
         </dependency>
 
         <dependency>
@@ -226,70 +224,43 @@
             <version>${sqids.version}</version>
         </dependency>
 
-        <!-- rest assured -->
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>spring-mock-mvc</artifactId>
-            <version>5.3.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>json-schema-validator</artifactId>
-            <version>5.3.1</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>5.3.0</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.codehaus.groovy</groupId>
-                    <artifactId>groovy</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.codehaus.groovy</groupId>
-                    <artifactId>groovy-xml</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
 
         <!-- cucumber -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>6.10.4</version> <!-- Compatível com JUnit 5.7 -->
+            <version>7.8.1</version>
             <scope>test</scope>
         </dependency>
 
-        <!-- Cucumber com JUnit Platform Engine -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
-            <version>6.10.4</version> <!-- Compatível com JUnit 5.7 -->
+            <version>7.8.1</version>
             <scope>test</scope>
         </dependency>
 
-        <!-- JUnit 5 (Jupiter) para suporte ao JUnit Platform -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.7.1</version> <!-- Compatível com Spring Boot 2.4.4 -->
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <version>1.9.0</version>
             <scope>test</scope>
-        </dependency>
+         </dependency>
 
-        <!-- JUnit Platform Suite -->
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite-api</artifactId>
-            <version>1.8.2</version> <!-- Compatível com JUnit 5.7 -->
+            <version>1.9.0</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-spring</artifactId>
+            <version>7.8.1</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 
@@ -323,6 +294,15 @@
                     <excludes>
                         <exclude>**/bdd/**</exclude>
                     </excludes>
+                    <properties>
+                        <configurationParameters>
+                            junit.jupiter.displayname.generator.default.remove-parent=true
+                        </configurationParameters>
+                    </properties>
+                    <systemPropertyVariables>
+                        <junit.jupiter.extensions.autodetection.enabled>true
+                        </junit.jupiter.extensions.autodetection.enabled>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
             <plugin>
@@ -362,5 +342,57 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>integration-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>3.1.2</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.junit.platform</groupId>
+                                <artifactId>junit-platform-launcher</artifactId>
+                                <version>1.9.3</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <includes combine.self="override">
+                                <include>**/*IT.java</include>
+                            </includes>
+                            <excludes combine.self="override">
+                                <exclude>**/*Test.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>bdd-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>3.1.2</version>
+                        <configuration>
+                            <excludes combine.self="override">
+                                <exclude>**/*Test.java</exclude>
+                            </excludes>
+                            <systemPropertyVariables>
+                                <surefire.includeJUnit5Engines>cucumber</surefire.includeJUnit5Engines>
+                                <cucumber.features>src/test/resources/features/FeatureOrder.feature</cucumber.features>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
 

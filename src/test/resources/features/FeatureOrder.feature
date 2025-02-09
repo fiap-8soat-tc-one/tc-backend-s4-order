@@ -1,24 +1,29 @@
 # language: en
-Feature: API - Order
-  Scenario: Registrar um pedido para cliente sem identificação
-    When enviar solicitação de pedido sem identificação do cliente
-    Then o pedido é criado com sucesso
+Feature: Tech Challenge Order
 
-  Scenario: Registrar um pedido para o cliente
-    When enviar solicitação de pedido para o cliente
-    Then o pedido é criado com sucesso para o cliente
+  Scenario: Register an order for an unidentified customer
+    When send a new order request without customer identification
+    Then the order is created successfully
 
-  Scenario: Confirmar pagamento de um pedido
-    Given pedido registrado para o cliente
-    When pagamento do pedido for confirmado
-    Then o pedido é enviado para preparação na cozinha
+  Scenario: Register an order for a customer
+    Given customer identified
+    When send a new order request for a customer
+    Then the order is created successfully for the customer
 
-  Scenario: Pedido pronto para o cliente
-    Given pedido registrado e pagamento confirmado para o cliente
-    When cozinha finalizar preparo do pedido
-    Then cliente pode retirar pedido no balcão
+  Scenario: Confirm payment for an order
+    Given an order is registered for a customer
+    When the payment order is confirmed
+    Then the order is sent to the kitchen for preparation
 
-  Scenario: Pedido finalizado
-    Given pedido pronto para o cliente retirar no balcão
-    When cliente retirar o pedido
-    Then o pedido do cliente é finalizado
+  Scenario: Order ready for the customer
+    Given an order is registered for a customer
+    And a payment is confirmed
+    When the kitchen finishes preparing the order
+    Then the customer can pick up the order at the counter
+
+  Scenario: Order completed
+    Given an order is registered for a customer
+    And a payment is confirmed
+    And a order is ready to pick up
+    When the customer picks up the order
+    Then the customer order is finalized
