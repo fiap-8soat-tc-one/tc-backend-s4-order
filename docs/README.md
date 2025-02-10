@@ -17,5 +17,5 @@ PostgreSQL é um sistema de gerenciamento de banco de dados relacional e objeto-
 
 Abaixo segue o diagrama que mostra como as tabelas se relacionam e as operações que elas realizam no respectivo microserviço:
 
-<img src="/assets/images/ER Diagrama - Order.png">
+<img src="../assets/images/ER Diagrama - Order.png">
 
