@@ -1,0 +1,110 @@
+# Server Configuration
+server:
+  port: 8082
+  undertow:
+    threads:
+      worker: 30
+  session:
+    persistent: false # performance
+    store-dir: /var/log/app # performance
+
+# Pool Connection and Postgres settings
+spring:
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
+    date-format: yyyy-MM-dd
+  
+  mvc:
+    format:
+      date: yyyy-MM-dd
+      date-time: yyyy-MM-dd HH:mm:ss
+      time: HH:mm:ss
+  profiles:
+    active: test
+  application:
+    name: tc-order-backend-api
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    timeout: 60000
+  rabbitmq:
+    addresses: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
+  datasource:
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5433}/${DATABASE_NAME:postgres}
+    username: ${DATABASE_USER:postgres}
+    password: ${DATABASE_PASS:123456}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 2
+      maximum-pool-size: 10
+      pool-name: TcBackendApiPool
+      idle-timeout: 9000
+      #isolate-internal-queries: true
+      connection-test-query: SELECT 1
+      connection-timeout: 18000
+  
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: false
+        format_sql: true
+        enable_lazy_load_no_trans: true
+    open-in-view: false
+
+app:
+  cache.ttl: 40000
+  cache.user.token: true
+  mvc.async.request-timeout: 10000
+  thread.async:
+    corePoolSize: 20
+    maxPoolSize: 300
+    queueCapacity: 600
+  auth.backoffice:
+    tokenExpiration: 85000
+  rest.client.oauth:
+    retry: 3
+    timeout: 5
+    endpoint: ${OAUTH_APP_HOST:http://localhost:8081}
+    clientId: dGNfY2xpZW50OnRlY2hfY2hhbGxlbmdlX2FwcA==
+    userName: ${AUTH_USER_ID:myller}
+    password: ${AUTH_USER_PASSWORD:12345678}
+  rest.client.backoffice:
+    retry: 3
+    timeout: 5
+    endpoint: ${BACKOFFICE_APP_HOST:http://localhost:8080}
+  client:
+    name: tc_client
+    secret: $2a$12$aNBFov6o75DX51iVqd5mM.Z5S.Wi7xHMS3OzcU5386TWRi28Y691W
+    signKey: tech-challenge
+    tokenExpirationTime: 86400
+    refreshTokenExpirationTime: 86400
+  jwt:
+    secret: e0b41325-42e5-4b3a-b995-b05c4e77c56d
+    expirationTimeInMillis: 3600000
+  rabbit:
+    config:
+      initialInterval: 20
+      maxInterval: 40
+      multiplier: 1
+      retries: 3
+      consumers: 10
+    bindings:
+      - topic: ha.tc-order-backend-api.order.event.order.created
+        routing-key: tc-order-backend-api.order.event.order.created
+        queue: ha.tc-order-backend-api.order.event.order.created.queue
+        dlx: ha.tc-order-backend-api.order.event.order.created.dlx
+        dlq: ha.tc-order-backend-api.order.event.order.created.dlq
+        declare: true
+
+      - topic: ha.tc-payment-backend-api.payment.event.updated
+        routing-key: tc-payment-backend-api.payment.event.updated
+        queue: ha.tc-payment-backend-api.payment.event.updated.queue
+        dlx: ha.tc-payment-backend-api.payment.event.updated.dlx
+        dlq: ha.tc-payment-backend-api.payment.event.updated.dlq
+        declare: true

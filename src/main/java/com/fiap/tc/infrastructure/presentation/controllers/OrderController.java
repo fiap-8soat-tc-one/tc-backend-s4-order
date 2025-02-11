@@ -65,7 +65,7 @@ public class OrderController {
     })
     @PostMapping(path = URLMapping.ROOT_PUBLIC_API_ORDERS, produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderResponse> register(
-            @RequestHeader("X-Authorization-Token") String accessToken,
+            @RequestHeader(value = "X-Authorization-Token", required = false) String accessToken,
             @ApiParam(value = "Order details for creating a new order",
                     required = true) @RequestBody @Valid OrderRequest request) {
 
