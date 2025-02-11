@@ -95,3 +95,7 @@ sequenceDiagram
 ## Documentação do Kubernetes
 
 [Clique Aqui para ser redirecionado](https://github.com/fiap-8soat-tc-one/tc-backend-s3-k8s-iac/blob/main/README.md)
+
+## Documentação do Banco de dados do Microserviço Order
+
+ [Clique Aqui para ser redirecionado](https://github.com/fiap-8soat-tc-one/tc-backend-s4-order/blob/d3e0ce172148d21bf5e1d02dc52741b3627ea48b/docs/README.md)
