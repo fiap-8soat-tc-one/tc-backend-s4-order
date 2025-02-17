@@ -17,7 +17,7 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthLoginClient {
-    static final String RESOURCE = "/api/public/v1/oauth/token";
+    static final String RESOURCE = "/oauth/token";
 
     private final WebClient webClientOAuth;
     private final RestClientOAuthConfig restClientConfig;
