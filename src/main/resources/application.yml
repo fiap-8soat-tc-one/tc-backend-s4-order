@@ -41,7 +41,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 2
-      maximum-pool-size: 10
+      maximum-pool-size: 100
       pool-name: TcBackendApiPool
       idle-timeout: 9000
       #isolate-internal-queries: true
@@ -58,15 +58,15 @@ spring:
     open-in-view: false
 
 app:
-  cache.ttl: 40000
+  cache.ttl: 400000
   cache.user.token: true
-  mvc.async.request-timeout: 10000
+  mvc.async.request-timeout: 100000
   thread.async:
     corePoolSize: 20
     maxPoolSize: 300
-    queueCapacity: 600
+    queueCapacity: 6000
   auth.backoffice:
-    tokenExpiration: 85000
+    tokenExpiration: 850000
   rest.client.oauth:
     retry: 3
     timeout: 5
@@ -76,7 +76,7 @@ app:
     password: ${AUTH_USER_PASSWORD:12345678}
   rest.client.backoffice:
     retry: 3
-    timeout: 5
+    timeout: 50
     endpoint: ${BACKOFFICE_APP_HOST:http://localhost:8080}
   client:
     name: tc_client

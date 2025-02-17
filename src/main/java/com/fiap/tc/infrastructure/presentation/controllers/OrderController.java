@@ -12,9 +12,11 @@ import com.fiap.tc.infrastructure.presentation.response.DefaultResponse;
 import com.fiap.tc.infrastructure.presentation.response.OrderListResponse;
 import com.fiap.tc.infrastructure.presentation.response.OrderResponse;
 import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @RestController
 @RequestMapping
 @Api(tags = "Orders API V1", produces = APPLICATION_JSON_VALUE)
+@Slf4j
 public class OrderController {
 
     @Autowired
@@ -69,15 +72,20 @@ public class OrderController {
             @ApiParam(value = "Order details for creating a new order",
                     required = true) @RequestBody @Valid OrderRequest request) {
 
-        var listOfItems = request.getOrderItems().stream().map(ORDER_ITEM_MAPPER::toDomain).toList();
+        try {
+            var listOfItems = request.getOrderItems().stream().map(ORDER_ITEM_MAPPER::toDomain).toList();
 
-        // anonymous flow
-        if (accessToken == null) {
-            return ok(ORDER_RESPONSE_MAPPER.fromDomain(registerOrderUseCase.register(null, listOfItems)));
+            // anonymous flow
+            if (accessToken == null) {
+                return ok(ORDER_RESPONSE_MAPPER.fromDomain(registerOrderUseCase.register(null, listOfItems)));
+            }
+
+            var document = jwtUtil.getDocumentFromToken(accessToken);
+            return ok(ORDER_RESPONSE_MAPPER.fromDomain(registerOrderUseCase.register(document, listOfItems)));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-
-        var document = jwtUtil.getDocumentFromToken(accessToken);
-        return ok(ORDER_RESPONSE_MAPPER.fromDomain(registerOrderUseCase.register(document, listOfItems)));
     }
 
     @ApiOperation(value = "update order status", notes = "(Private Endpoint) This endpoint is responsible for updating the order status for tracking by both the kitchen and the customer (reflected on the system monitor).")
@@ -89,8 +97,14 @@ public class OrderController {
     @PutMapping(path = URLMapping.ROOT_PRIVATE_API_ORDERS + "/status", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('UPDATE_STATUS_ORDERS')")
     public ResponseEntity<DefaultResponse> updateStatus(@ApiParam(value = "Order status update details", required = true) @RequestBody @Valid OrderStatusRequest request) {
-        updateStatusOrderUseCase.update(request.getId(), request.getStatus());
-        return ok(new DefaultResponse());
+        try {
+            updateStatusOrderUseCase.update(request.getId(), request.getStatus());
+            return ok(new DefaultResponse());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
     }
 
     @ApiOperation(value = "list of orders", notes = "(Private Endpoint) This endpoint is responsible for listing all orders.")
@@ -102,6 +116,11 @@ public class OrderController {
     @GetMapping(path = URLMapping.ROOT_PRIVATE_API_ORDERS)
     @PreAuthorize("hasAuthority('LIST_ORDERS')")
     public ResponseEntity<Page<OrderListResponse>> list(@ApiParam(required = true, value = "Orders Pagination") Pageable pageable) {
-        return ok(listOrdersUseCase.list(pageable).map(ORDER_LIST_MAPPER::fromDomain));
+        try {
+            return ok(listOrdersUseCase.list(pageable).map(ORDER_LIST_MAPPER::fromDomain));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

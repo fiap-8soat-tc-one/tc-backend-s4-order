@@ -22,7 +22,7 @@ public class CustomerServiceClient {
     private final RestClientBackofficeConfig restClientConfig;
     private final AuthTokenManager authTokenManager;
 
-    @Cacheable(value = "customer", key = "#document")
+    @Cacheable(value = "customer_order", key = "#document")
     public Optional<Customer> load(String document) {
         return Optional.ofNullable(this.webClientBackoffice.method(HttpMethod.GET).uri(format(RESOURCE, document))
                 .headers(header -> {
